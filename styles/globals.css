@@ -1,16 +1,35 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+.max-h {
+  min-height: 100vh;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.auth-side {
+  width: 80%;
 }
 
-* {
-  box-sizing: border-box;
+.hr {
+  width: 20vh;
+  height: 1px;
+  border-top: solid 1px #fff;
+}
+
+.btn-auth-nd {
+  background: #000;
+  border-radius: 10px;
+}
+
+.btn-auth-st {
+  background: #376aed;
+  border-radius: 10px;
+}
+
+.form-rounded {
+  border-radius: 15px;
+}
+
+.bg-forgot {
+  height: 100vh;
+  background-image: url("/images/forgot-cover.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
