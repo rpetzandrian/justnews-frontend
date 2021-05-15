@@ -1,3 +1,7 @@
+body {
+  min-height: 100vh;
+}
+
 .max-h {
   min-height: 100vh;
 }
@@ -33,3 +37,109 @@
   background-position: center;
   background-repeat: no-repeat;
 }
+
+.nav-link.active {
+  font-weight: 700;
+}
+
+.jumbotron {
+  height: 95vh;
+  background-image: url("/images/jumbotron.png");
+  background-size: cover;
+  background-position: left;
+  background-repeat: no-repeat;
+}
+
+.jumbotron-2 {
+  background-image: url("/images/jumbotron2.png");
+  background-size: cover;
+  background-position: left;
+  background-repeat: no-repeat;
+}
+
+.popular-tags .tags {
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin-top: 40px;
+}
+
+.form-input {
+  border-radius: 20px;
+}
+
+.form-input-group {
+  height: 20px;
+  border-left: none;
+  border-top-right-radius: 20px !important;
+  border-bottom-right-radius: 20px !important;
+}
+
+.group-text {
+  background-color: #fff;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.profile-photo {
+  border-radius: 50%;
+  border: solid 2px seagreen;
+}
+
+/* .form-write {
+  height: max-content;
+} */
+
+.upload-box {
+  background-color: #fff;
+  border: 1px solid rgba(55, 106, 237, 0.3);
+}
+
+.upload-dropbox {
+  background-color: #fff;
+  border: 2px dashed rgba(55, 106, 237, 0.3);
+  height: inherit;
+}
+
+.profile-thumb {
+  width: 82px;
+  height: 82px;
+  border-radius: 30px;
+}
+
+.radius {
+  border-radius: 24px;
+}
+
+.user-act {
+  margin-top: -30px;
+  position: relative;
+}
+
+.photo-profile {
+  border-radius: 24px;
+  border: solid 2px seagreen;
+  width: 115px;
+  height: 115px;
+  /* padding: 10px; */
+}
+
+.article-cover {
+  width: 100%;
+  height: 320px;
+}
+
+.comment-form {
+  border: none;
+  border-bottom: solid 1px #000;
+}
+
+.comment-form:focus {
+  outline: 0;
+  box-shadow: none;
+  border-color: #000;
+}
+/* .rounded {
+  border-radius: 100px;
+} */
