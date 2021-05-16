@@ -1,12 +1,19 @@
+import axios from 'axios'
 import Image from 'next/image'
 import { Button, Col, Figure, Row } from 'react-bootstrap'
+import useSWR from 'swr'
 import Footer from '../components/Footer'
 import Navigation from '../components/Navigation'
 import PostCard from '../components/PostCard'
 import useUser from '../data/auth-user'
+import { getPost } from '../libs/fetcher/usePost'
+import { getCategory } from '../libs/fetcher/useCategory'
 
 export default function Home() {
-  const { user, loading, loggedOut, mutate } = useUser();
+  const { user: auth, loading, loggedOut, mutate } = useUser();
+  const { data: category, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/category`, getCategory)
+  const { data: latestPosts, error: latestErr } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts?user_id=${auth?.data?.id}&time=desc`, getPost)
+  const { data: recommendedPosts, error: recommErr } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts?user_id=${auth?.data?.id}&recomended=true`, getPost)
 
   return (
     <>
@@ -21,6 +28,7 @@ export default function Home() {
       <section className='px-5 mt-5 popular-tags'>
         <h6>Popular Tags</h6>
         <div className='d-flex mt-4 overflow-auto'>
+          {/* <div className='mx-3'>#jokowi</div>
           <div className='mx-3'>#jokowi</div>
           <div className='mx-3'>#jokowi</div>
           <div className='mx-3'>#jokowi</div>
@@ -43,43 +51,30 @@ export default function Home() {
           <div className='mx-3'>#jokowi</div>
           <div className='mx-3'>#jokowi</div>
           <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
+          <div className='mx-3'>#jokowi</div> */}
         </div>
       </section>
 
       <section className='px-5 mt-5 category'>
         <h6>Category</h6>
         <div className='d-flex mt-4 overflow-auto'>
-          <div className='mx-2 figure'>
-            <img width={190} height={200} src='/images/goverment.png' />
-            <p className='text-center'>Goverment</p>
-          </div>
-          <div className='mx-2 figure'>
-            <img width={190} height={200} src='/images/goverment.png' />
-            <p className='text-center'>Goverment</p>
-          </div>
-          <div className='mx-2 figure'>
-            <img width={190} height={200} src='/images/goverment.png' />
-            <p className='text-center'>Goverment</p>
-          </div>
-          <div className='mx-2 figure'>
-            <img width={190} height={200} src='/images/goverment.png' />
-            <p className='text-center'>Goverment</p>
-          </div>
-          <div className='mx-2 figure'>
-            <img width={190} height={200} src='/images/goverment.png' />
-            <p className='text-center'>Goverment</p>
-          </div>
+          {category?.map(e => {
+            return (
+              <div className='mx-2 figure'>
+                <img width={190} height={200} src={`${process.env.NEXT_PUBLIC_IMG_BASE_URL}${e?.image}`} />
+                <p className='mt-3 text-center'>{e?.category}</p>
+              </div>
+            )
+          })}
         </div>
       </section>
 
       <section className='px-5 mt-5 recommended'>
         <h6>Recommended</h6>
         <div className='d-flex mt-4 overflow-auto'>
-          <PostCard />
-          <PostCard />
-          <PostCard />
+          {recommendedPosts?.length < 1 ? (<div>Post Not Found!</div>) : (recommendedPosts?.map(e => {
+            return <PostCard data={e} />
+          }))}
         </div>
       </section>
 
@@ -98,35 +93,32 @@ export default function Home() {
 
       <section className='p-5 mt-5 latest-news'>
         <h6>Latest News</h6>
-        <Row className='g-2 mt-4'>
-          <Col xs={12} sm={6} lg={4} xl={3}>
-            <PostCard />
-          </Col>
-          <Col xs={12} sm={6} lg={4} xl={3}>
-            <PostCard />
-          </Col>
-          <Col xs={12} sm={6} lg={4} xl={3}>
-            <PostCard />
-          </Col>
-          <Col xs={12} sm={6} lg={4} xl={3}>
-            <PostCard />
-          </Col>
-          <Col xs={12} sm={6} lg={4} xl={3}>
-            <PostCard />
-          </Col>
-          <Col xs={12} sm={6} lg={4} xl={3}>
-            <PostCard />
-          </Col>
-          <Col xs={12} sm={6} lg={4} xl={3}>
-            <PostCard />
-          </Col>
-          <Col xs={12} sm={6} lg={4} xl={3}>
-            <PostCard />
-          </Col>
-
-        </Row>
+        <div className='d-flex justify-content-evenly flex-wrap mt-3'>
+          {latestPosts?.length < 1 ? (<div>Post Not Found!</div>) : (latestPosts?.map(e => {
+            return <PostCard data={e} />
+          }))}
+        </div>
       </section>
       <Footer />
     </>
   )
 }
+
+// export async function getServerSideProps() {
+//   // `getStaticProps` is invoked on the server-side,
+//   // so this `fetcher` function will be executed on the server-side.
+//   // try {
+//   //   const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/posts`);
+//   //   const latestPosts = res.data.data;
+//   //   console.log(latestPosts)
+//   //   return { props: { latestPosts } };
+//   // } catch (err) {
+//   //   return { props: { err: true } }
+//   // };
+
+
+//   const result = await getPost(`${process.env.NEXT_PUBLIC_API_URL}/posts?time=asc`)
+//   const latestPosts = JSON.stringify(result)
+
+//   return { props: { latestPosts } }
+// }

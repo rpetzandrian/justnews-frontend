@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form'
 
 const Profile = () => {
   const router = useRouter()
-  const { user: auth, loggedOut } = useUser();
+  const { user: auth, loggedOut, mutate: authMutate } = useUser();
   const { data, error, mutate: userMutate } = useSWR([`${process.env.NEXT_PUBLIC_API_URL}/users/${auth?.data?.id}`, auth?.data?.token], getUser);
 
   const [disabled, setDisabled] = useState(true);
@@ -107,7 +107,7 @@ const Profile = () => {
                   <p className='pt-3'>Help</p>
                   <img className='' src='/icons/angle-right.svg' alt='right-angle'></img>
                 </div>
-                <div className='d-flex justify-content-between align-items-center' onClick={() => { localStorage.clear(); mutate(null) }}>
+                <div className='d-flex justify-content-between align-items-center' onClick={() => { localStorage.clear(); authMutate(null) }}>
                   <p className='pt-3'>Logout</p>
                   <img className='' src='/icons/angle-right.svg' alt='right-angle'></img>
                 </div>
