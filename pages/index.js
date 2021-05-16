@@ -3,8 +3,11 @@ import { Button, Col, Figure, Row } from 'react-bootstrap'
 import Footer from '../components/Footer'
 import Navigation from '../components/Navigation'
 import PostCard from '../components/PostCard'
+import useUser from '../data/auth-user'
 
 export default function Home() {
+  const { user, loading, loggedOut, mutate } = useUser();
+
   return (
     <>
       <Navigation />
