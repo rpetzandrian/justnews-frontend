@@ -1,6 +1,26 @@
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
+import { useForm } from "react-hook-form";
+import useUser from "../../data/auth-user";
+import { useLogin } from '../../libs/fetcher/useAuth'
 
 const Login = () => {
+  const router = useRouter();
+  const { user, mutate } = useUser();
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  const login = async (data) => {
+    await useLogin(data)
+    mutate()
+  }
+
+  useEffect(() => {
+    if (user) {
+      router.replace('/')
+    }
+  }, [user])
+
   return (
     <>
       <Row className='g-0 max-h'>
@@ -34,17 +54,19 @@ const Login = () => {
           <div className='mx-auto auth-side mt-5'>
             <h4>Login</h4>
             <p className='text-muted mb-5'>Hey, welcome back to News Today!</p>
-            <Form>
+            <Form onSubmit={handleSubmit(login)}>
               <Form.Group controlId="formBasicEmail" className='my-3'>
                 <Form.Label>Email address: </Form.Label>
-                <Form.Control className='py-3 form-rounded' type="email" placeholder="Enter email" />
+                <Form.Control className={`py-3 form-rounded ${errors.email ? 'is-invalid' : ''}`} type="email" placeholder="Enter email" {...register('email', { required: 'Please insert an email!' })} />
               </Form.Group>
+              <small className='text-danger'>{errors?.email?.message}</small>
 
               <Form.Group controlId="formBasicPassword" className='my-3'>
                 <Form.Label>Password: </Form.Label>
-                <Form.Control className='py-3 form-rounded' type="password" placeholder="Password" />
+                <Form.Control className={`py-3 form-rounded ${errors.password ? 'is-invalid' : ''}`} type="password" placeholder="Password" {...register('password', { required: 'Please insert a password!' })} />
               </Form.Group>
-              <Button className='btn btn-auth-st w-100 py-3 px-5 mt-3'>
+              <small className='text-danger'>{errors?.password?.message}</small>
+              <Button className='btn btn-auth-st w-100 py-3 px-5 mt-3' onClick={handleSubmit(login)}>
                 Login
               </Button>
             </Form>

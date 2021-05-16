@@ -1,6 +1,18 @@
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
+import useUser from "../../data/auth-user";
 
 const Forgot = () => {
+  const router = useRouter()
+  const { user, mutate } = useUser();
+
+  useEffect(() => {
+    if (user) {
+      router.replace('/')
+    }
+  }, [user])
+
   return (
     <>
       <Row className='g-0 max-h'>
