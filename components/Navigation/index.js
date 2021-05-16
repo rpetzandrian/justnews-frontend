@@ -1,7 +1,10 @@
+import { useRouter } from 'next/router';
 import { Button, Container, Form, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap'
+import useUser from '../../data/auth-user';
 
 const Navigation = () => {
-  const isLogin = true
+  const router = useRouter()
+  const { user, loading, loggedOut, mutate } = useUser();
 
   return (
     <>
@@ -15,7 +18,7 @@ const Navigation = () => {
             <Nav.Link href="/category" className='mx-5 text-muted'>Category</Nav.Link>
             <Nav.Link href="/about" className='mx-5 text-muted'>About</Nav.Link>
           </Nav>
-          {isLogin ? (
+          {!loggedOut ? (
             <div className='d-flex align-items-center'>
               <div className="mx-3 input-group">
                 <img className="input-group-text ps-4 group-text" src='/icons/search.svg' alt='search' />
@@ -31,10 +34,10 @@ const Navigation = () => {
             </div>
           ) : (
             <div>
-              <Button variant='light' className='px-4 me-3'>
+              <Button variant='light' className='px-4 me-3' onClick={() => { router.replace('/signup'); mutate(null) }}>
                 Sign Up
               </Button>
-              <Button variant='primary' className='px-4 me-3'>
+              <Button variant='primary' className='px-4 me-3' onClick={() => { router.replace('/login'); mutate(null) }}>
                 Login
               </Button>
             </div>

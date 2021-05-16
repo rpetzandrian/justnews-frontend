@@ -1,6 +1,26 @@
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
+import { useForm } from "react-hook-form";
+import useUser from "../../data/auth-user";
+import { useSignup } from "../../libs/fetcher/useAuth";
 
 const Signup = () => {
+  const router = useRouter()
+  const { user, mutate } = useUser();
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  const signup = async (data) => {
+    await useSignup(data)
+    mutate()
+  }
+
+  useEffect(() => {
+    if (user) {
+      router.replace('/')
+    }
+  }, [user])
+
   return (
     <>
       <Row className='g-0 max-h'>
@@ -33,27 +53,31 @@ const Signup = () => {
         <Col xs={12} md={6} className='my-auto'>
           <div className='mx-auto auth-side mt-5'>
             <h4>Sign up</h4>
-            <p className='text-muted mb-5'>Hey, welcome to News Today! Create an account to enjoy our full feautres!</p>
-            <Form>
+            <p className='text-muted mb-5'>Hey, welcome to News Today! Create an account to enjoy our full features!</p>
+
+            <Form onSubmit={handleSubmit(signup)}>
               <Form.Group controlId="formBasicEmail" className='my-3'>
                 <Form.Label>Email address: </Form.Label>
-                <Form.Control className='py-3 form-rounded' type="email" placeholder="Enter email" />
+                <Form.Control className={`py-3 form-rounded ${errors.email ? 'is-invalid' : ''}`} type="email" placeholder="Enter email" {...register('email', { required: 'Please insert an email!' })} />
               </Form.Group>
+              <small className='text-danger'>{errors?.email?.message}</small>
 
               <Form.Group controlId="formBasicPassword" className='my-3'>
                 <Form.Label>Password: </Form.Label>
-                <Form.Control className='py-3 form-rounded' type="password" placeholder="Password" />
+                <Form.Control className={`py-3 form-rounded ${errors.password ? 'is-invalid' : ''}`} type="password" placeholder="Password" {...register('password', { required: 'Please insert a password!' })} />
               </Form.Group>
+              <small className='text-danger'>{errors?.password?.message}</small>
 
-              <Form.Group controlId="formBasicPassword" className='my-3'>
+              <Form.Group controlId="formBasicPhone" className='my-3'>
                 <Form.Label>Phone Number: </Form.Label>
-                <Form.Control className='py-3 form-rounded' type="text" placeholder="Phone number" />
+                <Form.Control className={`py-3 form-rounded ${errors.phone ? 'is-invalid' : ''}`} type="text" placeholder="Phone number" {...register('phone', { required: 'Please insert a phone number!' })} />
               </Form.Group>
-              <Button className='btn btn-auth-st w-100 py-3 px-5 mt-3'>
-                Login
-              </Button>
+              <small className='text-danger'>{errors?.phone?.message}</small>
             </Form>
-            <p className='fw-bold text-center mt-5'>OR LOGIN WITH</p>
+            <Button className='btn btn-auth-st w-100 py-3 px-5 mt-3' onClick={handleSubmit(signup)}>
+              Signup
+            </Button>
+            <p className='fw-bold text-center mt-5'>OR SIGNUP WITH</p>
             <div className='d-flex justify-content-center mb-5'>
               <img src='/icons/google.svg' alt='' className='mx-3' />
               <img src='/icons/fb.svg' alt='' className='mx-3' />
