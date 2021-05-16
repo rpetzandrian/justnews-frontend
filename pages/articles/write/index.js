@@ -1,9 +1,40 @@
 import Image from "next/image"
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
 import { Card, Col, Form, Row, Button } from "react-bootstrap"
+import { useForm } from "react-hook-form"
+import useSWR, { mutate } from "swr"
 import Footer from "../../../components/Footer"
 import Navigation from "../../../components/Navigation"
+import useUser from "../../../data/auth-user"
+import auth from "../../../libs/fetcher/auth"
+import { getCategory } from "../../../libs/fetcher/useCategory"
+import { addPost } from "../../../libs/fetcher/usePost"
 
 const WriteArticle = () => {
+  const router = useRouter()
+  const { user: auth, loggedOut } = useUser()
+  const { data: category, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/category`, getCategory)
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [cover, setCover] = useState(null)
+
+  useEffect(() => {
+    if (loggedOut) {
+      router.replace('/')
+    }
+  }, [loggedOut])
+
+  const add = (data) => {
+    const formData = new FormData()
+    data.title ? formData.append('title', data.title) : ''
+    data.category_id ? formData.append('category_id', data.category_id) : ''
+    data.text ? formData.append('text', data.text) : ''
+    cover ? formData.append('cover', cover) : ''
+    auth?.data?.id ? formData.append('user_id', auth.data.id) : ''
+
+    mutate(addPost(`${process.env.NEXT_PUBLIC_API_URL}/posts`, formData))
+  }
+
   return (
     <>
       <Navigation />
@@ -22,7 +53,7 @@ const WriteArticle = () => {
               <form encType='multipart/form-data' className='h-100'>
                 <Card.Body className='h-100'>
                   <label className='rounded text-center d-flex justify-content-center upload-dropbox'>
-                    <input type='file' className='w-100 h-100 d-none' />
+                    <input type='file' className='w-100 h-100 d-none' onChange={(e) => setCover(e.target.files[0])} />
                     <Image width={100} height={100} src='/icons/plus.svg' alt='plus' />
                   </label>
                 </Card.Body>
@@ -37,17 +68,16 @@ const WriteArticle = () => {
               <Row>
                 <Col>
                   <Form.Group controlId="formBasicEmail">
-                    <Form.Control type="text" placeholder="Article Title" className='py-3 rounded upload-box' />
+                    <Form.Control type="text" placeholder="Article Title" className='py-3 rounded upload-box' {...register('title')} />
                   </Form.Group>
                 </Col>
                 <Col>
                   <Form.Group controlId="exampleForm.ControlSelect1">
-                    <Form.Control placeholder='Article category' as="select" className='py-3 rounded upload-box'>
-                      <option selected>Article Category</option>
-                      <option>Economy</option>
-                      <option>Politic</option>
-                      <option>Sport</option>
-                      <option>Culture</option>
+                    <Form.Control placeholder='Article category' as="select" className='py-3 rounded upload-box' {...register('category_id')}>
+                      <option value={0} selected>Article Category</option>
+                      {category?.map(e => {
+                        return <option value={e.id}>{e.category}</option>
+                      })}
                     </Form.Control>
                   </Form.Group>
                 </Col>
@@ -62,11 +92,11 @@ const WriteArticle = () => {
               </Col>
               <Col xs={12}>
                 <Form.Group controlId="exampleForm.ControlTextarea1">
-                  <Form.Control placeholder='Type the Article' as="textarea" rows={20} className='py-3 rounded upload-box' />
+                  <Form.Control placeholder='Type the Article' as="textarea" rows={20} className='py-3 rounded upload-box' {...register('text')} />
                 </Form.Group>
               </Col>
             </Form>
-            <Button variant='primary' className='w-100 text-center mt-3 py-3 rounded'>
+            <Button variant='primary' className='w-100 text-center mt-3 py-3 rounded' onClick={handleSubmit(add)}>
               Request Publish Article
             </Button>
           </Col>
