@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { Button, Container, Form, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import useUser from '../../data/auth-user';
 
-const Navigation = () => {
+const Navigation = ({ changeKeyword, query }) => {
   const router = useRouter()
   const { user, loading, loggedOut, mutate } = useUser();
 
@@ -22,7 +22,7 @@ const Navigation = () => {
             <div className='d-flex align-items-center'>
               <div className="mx-3 input-group">
                 <img className="input-group-text ps-4 group-text" src='/icons/search.svg' alt='search' />
-                <input placeholder='Search' type="text" className='form-control py-3 px-4 form-input-group profile' />
+                <input placeholder='Search' type="text" className='form-control py-3 px-4 form-input-group profile' onFocus={() => router.push('/search')} onChange={(e) => changeKeyword({ ...query, search: e.target.value })} />
                 <small className='text-danger ms-3 mt-2'></small>
               </div>
               <div className='mx-3 notification'>
