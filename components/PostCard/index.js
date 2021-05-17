@@ -6,14 +6,18 @@ import { likeOrUnlike } from '../../libs/fetcher/usePost'
 
 const PostCard = ({ data }) => {
   const router = useRouter()
-  const { user: auth } = useUser()
+  const { user: auth, loggedOut } = useUser()
 
   const like = () => {
-    mutate(likeOrUnlike(`${process.env.NEXT_PUBLIC_API_URL}/posts/likes/${auth?.data?.id}/${data?.id}`, 'PATCH'))
+    if (!loggedOut) {
+      mutate(likeOrUnlike(`${process.env.NEXT_PUBLIC_API_URL}/posts/likes/${auth?.data?.id}/${data?.id}`, 'PATCH'))
+    }
   }
 
   const unlike = () => {
-    mutate(likeOrUnlike(`${process.env.NEXT_PUBLIC_API_URL}/posts/unlikes/${auth?.data?.id}/${data?.id}`, 'DELETE'))
+    if (!loggedOut) {
+      mutate(likeOrUnlike(`${process.env.NEXT_PUBLIC_API_URL}/posts/unlikes/${auth?.data?.id}/${data?.id}`, 'DELETE'))
+    }
   }
 
   return (

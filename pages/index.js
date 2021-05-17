@@ -72,7 +72,7 @@ export default function Home({ latest, recommended }) {
       <section className='px-5 mt-5 recommended'>
         <h6>Recommended</h6>
         <div className='d-flex mt-4 overflow-auto'>
-          {recommendedPosts?.length < 1 ? (<div>Post Not Found!</div>) : (recommendedPosts?.map(e => {
+          {recommendedPosts?.post?.length < 1 ? (<div>Post Not Found!</div>) : (recommendedPosts?.post?.map(e => {
             return <PostCard data={e} />
           }))}
         </div>
@@ -94,7 +94,7 @@ export default function Home({ latest, recommended }) {
       <section className='p-5 mt-5 latest-news'>
         <h6>Latest News</h6>
         <div className='d-flex justify-content-evenly flex-wrap mt-3'>
-          {latestPosts?.length < 1 ? (<div>Post Not Found!</div>) : (latestPosts?.map(e => {
+          {latestPosts?.post?.length < 1 ? (<div>Post Not Found!</div>) : (latestPosts?.post?.map(e => {
             return <PostCard data={e} />
           }))}
         </div>
