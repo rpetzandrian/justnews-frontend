@@ -28,7 +28,6 @@ export default function Home({ latest, recommended }) {
       <section className='px-5 mt-5 popular-tags'>
         <h6>Popular Tags</h6>
         <div className='d-flex mt-4 overflow-auto'>
-          {/* <div className='mx-3'>#jokowi</div>
           <div className='mx-3'>#jokowi</div>
           <div className='mx-3'>#jokowi</div>
           <div className='mx-3'>#jokowi</div>
@@ -51,7 +50,8 @@ export default function Home({ latest, recommended }) {
           <div className='mx-3'>#jokowi</div>
           <div className='mx-3'>#jokowi</div>
           <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div> */}
+          <div className='mx-3'>#jokowi</div>
+          <div className='mx-3'>#jokowi</div>
         </div>
       </section>
 
@@ -104,7 +104,7 @@ export default function Home({ latest, recommended }) {
   )
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const resultLatest = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/posts?time=asc`, {
     headers: {
       'Origin': 'http://localhost:3000'
