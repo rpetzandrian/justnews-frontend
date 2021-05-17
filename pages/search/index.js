@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Col, Dropdown, Row } from 'react-bootstrap'
@@ -8,12 +9,11 @@ import PostCard from '../../components/PostCard'
 import useUser from '../../data/auth-user'
 import { getPost } from '../../libs/fetcher/usePost'
 
-const Search = () => {
+const Search = ({ initialPosts }) => {
   const { user: auth, loading, loggedOut, mutate } = useUser();
   const router = useRouter()
-  const [query, setQuery] = useState({
-  })
-  const { data: posts, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts?user_id=${auth?.data?.id}&search=${router?.query?.search || ''}&name=${router?.query?.name || ''}&time=${router?.query?.time || ''}`, getPost)
+  const [query, setQuery] = useState({})
+  const { data: posts, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts?user_id=${auth?.data?.id}&search=${router?.query?.search}&name=${router?.query?.name || ''}&time=${router?.query?.time || ''}`, getPost, { initialData: initialPosts })
 
   useEffect(() => {
     if (loggedOut) {
@@ -22,13 +22,19 @@ const Search = () => {
   }, [loggedOut])
 
   useEffect(() => {
-    router.push({
-      pathname: '/search',
-      query: {
-        search: query.search,
-        [query.type || '']: query.value || ''
-      }
-    })
+    if (query) {
+      router.push({
+        pathname: '/search',
+        query: {
+          search: query.search,
+          [query.type || '']: query.value || ''
+        }
+      })
+    } else {
+      router.push({
+        pathname: '/search',
+      })
+    }
   }, [query])
 
   return (
@@ -101,3 +107,15 @@ const Search = () => {
 }
 
 export default Search
+
+export async function getStaticProps() {
+  const resultPost = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/posts?time=asc`, {
+    headers: {
+      'Origin': 'http://localhost:3000'
+    }
+  })
+  const initialPosts = await resultPost.data.data
+
+  return { props: { initialPosts } }
+
+}
