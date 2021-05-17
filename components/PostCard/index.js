@@ -1,10 +1,11 @@
 import moment from 'moment'
-import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { mutate } from 'swr'
 import useUser from '../../data/auth-user'
 import { likeOrUnlike } from '../../libs/fetcher/usePost'
 
 const PostCard = ({ data }) => {
+  const router = useRouter()
   const { user: auth } = useUser()
 
   const like = () => {
@@ -20,12 +21,12 @@ const PostCard = ({ data }) => {
       <div className="card mx-2 my-2 post-card shadow-lg border-0" style={{ minHeight: '140px', minWidth: '318px', maxHeight: '198px', maxWidth: '320px' }}>
         <div className="row g-0">
           <div className="col-4 p-0">
-            <img width='100px' height='140px' src={`${process.env.NEXT_PUBLIC_IMG_BASE_URL}${data?.cover}`} alt="..." />
+            <img width='100px' height='140px' src={`${process.env.NEXT_PUBLIC_IMG_BASE_URL}${data?.cover}`} alt="cover" onClick={() => router.push(`/articles/${data?.id}`)} />
           </div>
           <div className="col-8">
             <div className="card-body d-flex flex-column h-100">
               <h5 className="card-title">{data?.tags}</h5>
-              <p className="card-text">{data?.title}</p>
+              <p className="card-text" onClick={() => router.push(`/articles/${data?.id}`)}>{data?.title}</p>
               <div className="card-text mt-auto">
                 <div className='d-flex text-muted'>
                   <div className='d-flex ms-2 justify-content-center align-items-center'>

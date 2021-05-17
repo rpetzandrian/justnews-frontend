@@ -1,19 +1,30 @@
+import moment from 'moment'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
+import useSWR from 'swr'
 import Footer from '../../../components/Footer'
 import Navigation from '../../../components/Navigation'
+import useUser from '../../../data/auth-user'
+import { getById } from '../../../libs/fetcher/usePost'
 
 const ArticleDetail = () => {
   const { id } = useRouter().query
+  const router = useRouter()
+  const { user: auth, loggedOut, mutate: authMutate } = useUser();
+  const { data: post } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts/${id}?user_id=${auth?.data?.id}`, getById)
+
+  useEffect(() => {
+    if (loggedOut) router.replace('/')
+  }, [loggedOut])
 
   return (
     <>
       <Navigation />
       <section className='px-5 mt-5 article-detail-head'>
         <div className='px-5 mt-5 d-flex justify-content-between'>
-          <div className='d-flex'>
+          <div className='d-flex' onClick={() => router.back()}>
             <img src='/icons/back.svg' alt='back' />
             <p className='ms-3 pt-3'>Back</p>
           </div>
@@ -22,45 +33,38 @@ const ArticleDetail = () => {
         </div>
       </section>
 
-      <section className='px-5 mt-5'>
-        <Row className='align-items-center'>
-          <Col xs={12} md={6} className='mt-3'>
-            <img className='article-cover' src='/images/jumbotron.png' alt='' />
-          </Col>
-          <Col xs={12} md={6} className='mt-3'>
-            <h3>Thailand at the 2019 Southeast Asian Games</h3>
-            <p className='mt-5 mb-0'>Richard Gervain - Author</p>
-            <small className='text-muted mt-0'>Wed, March 3rd 2021</small>
-            <div className='d-flex mt-3'>
-              <div className='d-flex justify-content-start align-items-center'>
-                <img src='/icons/likes.svg' alt='likes' />
-                <p className='mx-3 pt-3'>21K</p>
-              </div>
-              <img width='24px' src='/icons/Bookmark-white.svg' alt='save' />
-            </div>
-            <Button variant='dark' className='w-100 py-4 radius mt-3'>
-              Share Article Link
-            </Button>
-          </Col>
-        </Row>
-      </section>
+      {post && (
+        <>
+          <section className='px-5 mt-5'>
+            <Row className='align-items-center'>
+              <Col xs={12} md={6} className='mt-3'>
+                <img className='article-cover' src={`${process.env.NEXT_PUBLIC_IMG_BASE_URL}${post?.cover} `} alt='' />
+              </Col>
+              <Col xs={12} md={6} className='mt-3'>
+                <h3>{post?.title}</h3>
+                <p className='mt-5 mb-0'>{post?.author} - Author</p>
+                <small className='text-muted mt-0'>{moment(`${post?.publish_at} `, 'YYYYMMDD').format('dddd, MMM Do YYYY')}</small>
+                <div className='d-flex mt-3'>
+                  <div className='d-flex justify-content-start align-items-center'>
+                    <img src='/icons/likes.svg' alt='likes' />
+                    <p className='mx-3 pt-3'>{post?.like}</p>
+                  </div>
+                  <img width='24px' src='/icons/Bookmark-white.svg' alt='save' />
+                </div>
+                <Button variant='dark' className='w-100 py-4 radius mt-3'>
+                  Share Article Link
+                </Button>
+              </Col>
+            </Row>
+          </section>
 
-      <section className='px-5 mt-3 article-text'>
-        <p>
-          During the 2019 Southeast Asian Games, governor the Sports Authority of Thailand (SAT) Kongsak Yodmanee criticised the organization of the games, as the Philippines held the games in many cities and municipalities, causing to the various concerns and controversies. He will propose to hold the next Thailand's Southeast Asian Games in "one" city or province. He also suggested Bangkok and Chonburi Province are the best choice for hosting the Thailand's games. He mentioned Bangkok traffic is less congested than Manila and the city has many existing venues for the games but water sports venues.
-
-          Bangkok hosted the inaugural games in 1959 and 1967 as Southeast Asian Peninsular Games, which were the precursor to the modern Southeast Asian Games, and 1985 as Southeast Asian Games. Bangkok hosted many global and continental events such as four-time Asian Games and Summer Universiade in 2007.
-
-          Bangkok will host the 2021 Asian Indoor and Martial Arts Games with Chonburi Province It acted as the test event and a prelude for the future multi-sport event, a proposed Youth Olympic Games in 2026.
-
-          During the 2019 Southeast Asian Games, governor the Sports Authority of Thailand (SAT) Kongsak Yodmanee criticised the organization of the games, as the Philippines held the games in many cities and municipalities, causing to the various concerns and controversies. He will propose to hold the next Thailand's Southeast Asian Games in "one" city or province. He also suggested Bangkok and Chonburi Province are the best choice for hosting the Thailand's games. He mentioned Bangkok traffic is less congested than Manila and the city has many existing venues for the games but water sports venues.
-
-          Bangkok hosted the inaugural games in 1959 and 1967 as Southeast Asian Peninsular Games, which were the precursor to the modern Southeast Asian Games, and 1985 as Southeast Asian Games. Bangkok hosted many global and continental events such as four-time Asian Games and Summer Universiade in 2007.
-
-          Bangkok will host the 2021 Asian Indoor and Martial Arts Games with Chonburi Province It acted as the test event and a prelude for the future multi-sport event, a proposed Youth Olympic Games in 2026.
-
-        </p>
-      </section>
+          <section className='px-5 mt-3 article-text'>
+            <p>
+              {post?.text}
+            </p>
+          </section>
+        </>
+      )}
 
       <section className='px-5 mt-5 comment'>
         <h6>Comments</h6>
