@@ -9,11 +9,11 @@ import useUser from '../data/auth-user'
 import { getPost } from '../libs/fetcher/usePost'
 import { getCategory } from '../libs/fetcher/useCategory'
 
-export default function Home() {
+export default function Home({ latest, recommended }) {
   const { user: auth, loading, loggedOut, mutate } = useUser();
   const { data: category, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/category`, getCategory)
-  const { data: latestPosts, error: latestErr } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts?user_id=${auth?.data?.id || ''}&time=desc`, getPost)
-  const { data: recommendedPosts, error: recommErr } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts?user_id=${auth?.data?.id || ''}&recomended=true`, getPost)
+  const { data: latestPosts, error: latestErr } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts?user_id=${auth?.data?.id || ''}&time=desc`, getPost, { initialData: latest })
+  const { data: recommendedPosts, error: recommErr } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts?user_id=${auth?.data?.id || ''}&recomended=true`, getPost, { initialData: recommended })
 
   return (
     <>
@@ -104,21 +104,21 @@ export default function Home() {
   )
 }
 
-// export async function getServerSideProps() {
-//   // `getStaticProps` is invoked on the server-side,
-//   // so this `fetcher` function will be executed on the server-side.
-//   // try {
-//   //   const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/posts`);
-//   //   const latestPosts = res.data.data;
-//   //   console.log(latestPosts)
-//   //   return { props: { latestPosts } };
-//   // } catch (err) {
-//   //   return { props: { err: true } }
-//   // };
+export async function getServerSideProps() {
+  const resultLatest = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/posts?time=asc`, {
+    headers: {
+      'Origin': 'http://localhost:3000'
+    }
+  })
+  const latest = await resultLatest.data.data
 
+  const resultRecommended = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/posts?recomended=true`, {
+    headers: {
+      'Origin': 'http://localhost:3000'
+    }
+  })
+  const recommended = await resultRecommended.data.data
 
-//   const result = await getPost(`${process.env.NEXT_PUBLIC_API_URL}/posts?time=asc`)
-//   const latestPosts = JSON.stringify(result)
+  return { props: { latest, recommended } }
 
-//   return { props: { latestPosts } }
-// }
+}
