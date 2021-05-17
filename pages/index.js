@@ -12,8 +12,8 @@ import { getCategory } from '../libs/fetcher/useCategory'
 export default function Home() {
   const { user: auth, loading, loggedOut, mutate } = useUser();
   const { data: category, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/category`, getCategory)
-  const { data: latestPosts, error: latestErr } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts?user_id=${auth?.data?.id}&time=desc`, getPost)
-  const { data: recommendedPosts, error: recommErr } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts?user_id=${auth?.data?.id}&recomended=true`, getPost)
+  const { data: latestPosts, error: latestErr } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts?user_id=${auth?.data?.id || ''}&time=desc`, getPost)
+  const { data: recommendedPosts, error: recommErr } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts?user_id=${auth?.data?.id || ''}&recomended=true`, getPost)
 
   return (
     <>

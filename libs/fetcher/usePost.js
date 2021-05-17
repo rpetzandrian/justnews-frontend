@@ -11,6 +11,17 @@ const getPost = (url) => {
   })
 }
 
+const getById = (url) => {
+  return axios({
+    url: url,
+    method: 'GET',
+  }).then(res => {
+    return res.data.data
+  }).catch(err => {
+    return err.response
+  })
+}
+
 const addPost = (url, data) => {
   if (url) {
     return axios({
@@ -38,4 +49,4 @@ const likeOrUnlike = (url, method) => {
   }
 }
 
-export { getPost, addPost, likeOrUnlike }
+export { getPost, addPost, likeOrUnlike, getById }

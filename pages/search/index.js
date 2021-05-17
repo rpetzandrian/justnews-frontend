@@ -16,6 +16,12 @@ const Search = () => {
   const { data: posts, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts?user_id=${auth?.data?.id}&search=${router?.query?.search || ''}&name=${router?.query?.name || ''}&time=${router?.query?.time || ''}`, getPost)
 
   useEffect(() => {
+    if (loggedOut) {
+      router.replace('/')
+    }
+  }, [loggedOut])
+
+  useEffect(() => {
     router.push({
       pathname: '/search',
       query: {
