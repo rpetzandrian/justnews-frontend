@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Col, Dropdown, Row } from 'react-bootstrap'
-import useSWR from 'swr'
+import useSWR, { useSWRInfinite } from 'swr'
 import Footer from '../../components/Footer'
 import Navigation from '../../components/Navigation'
 import PostCard from '../../components/PostCard'
@@ -13,7 +13,8 @@ const Search = ({ initialPosts }) => {
   const { user: auth, loading, loggedOut, mutate } = useUser();
   const router = useRouter()
   const [query, setQuery] = useState({})
-  const { data: posts, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts?user_id=${auth?.data?.id}&search=${router?.query?.search}&name=${router?.query?.name || ''}&time=${router?.query?.time || ''}`, getPost, { initialData: initialPosts })
+  const [page, setPage] = useState([])
+  const { data: posts } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts?user_id=${auth?.data?.id}&search=${router?.query?.search}&name=${router?.query?.name || ''}&time=${router?.query?.time || ''}&limit=1&page=${router?.query?.page || 1}`, getPost, { initialData: initialPosts })
 
   useEffect(() => {
     if (loggedOut) {
@@ -22,11 +23,22 @@ const Search = ({ initialPosts }) => {
   }, [loggedOut])
 
   useEffect(() => {
+    let total = []
+    if (posts.total_pages > 0) {
+      for (let x = 0; x < posts.total_pages; x++) {
+        total.push(x + 1)
+      }
+    }
+    setPage([...total])
+  }, [posts])
+
+  useEffect(() => {
     if (query) {
       router.push({
         pathname: '/search',
         query: {
           search: query.search,
+          page: query.page,
           [query.type || '']: query.value || ''
         }
       })
@@ -95,11 +107,20 @@ const Search = ({ initialPosts }) => {
       </section>
       <section className='px-5 mb-5'>
         <div className='d-flex justify-content-evenly flex-wrap mt-3'>
-          {posts?.length >= 1 ? posts?.map(e => {
+          {posts?.post?.length >= 1 ? posts?.post?.map(e => {
             return <PostCard data={e} />
           }) : (<div>Post not found</div>)}
         </div>
-        <p className='text-muted fw-bold mt-5 text-center'>End of Result</p>
+        <div className='d-flex justify-content-center flex-wrap mt-3'>
+          <select onChange={e => setQuery({ ...query, page: e.target.value })}>
+            {page !== [] && page?.map(e => {
+              return (
+                <option value={e} >{e}</option>
+              )
+            })}
+          </select>
+        </div>
+        {/* <p className='text-muted fw-bold mt-5 text-center'>End of Result</p> */}
       </section>
       <Footer />
     </>
@@ -109,7 +130,7 @@ const Search = ({ initialPosts }) => {
 export default Search
 
 export async function getStaticProps() {
-  const resultPost = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/posts?time=asc`, {
+  const resultPost = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/posts?time=asc&limit=1`, {
     headers: {
       'Origin': 'http://localhost:3000'
     }
