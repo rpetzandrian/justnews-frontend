@@ -55,9 +55,9 @@ const Search = ({ initialPosts }) => {
       <section className='px-5 mt-5'>
         <p className='fw-bold'>Search result for "{`${query?.search} `}"</p>
       </section>
-      <section className='px-5 mt-5 related-tags'>
+      <section className='px-5 mt-5 popular-tags'>
         <h6>Related Tags</h6>
-        <div className='d-flex mt-4 overflow-auto'>
+        <div className='d-flex mt-4 overflow-auto tags'>
           <div className='mx-3'>#jokowi</div>
           <div className='mx-3'>#jokowi</div>
           <div className='mx-3'>#jokowi</div>

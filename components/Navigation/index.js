@@ -8,8 +8,8 @@ const Navigation = ({ changeKeyword, query }) => {
 
   return (
     <>
-      <Navbar bg="light" expand="lg" className='border border-bottom py-2'>
-        <Navbar.Brand href="/" className='ms-3 app-name'>Just News</Navbar.Brand>
+      <Navbar bg="light" expand="lg" className='border border-bottom py-2 ff-lato'>
+        <Navbar.Brand href="/" className='ms-3 ff-newsreader fw-700 display-1 app-name'>Just News</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" className='me-3' />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="d-flex mx-auto">
@@ -34,10 +34,10 @@ const Navigation = ({ changeKeyword, query }) => {
             </div>
           ) : (
             <div>
-              <Button variant='light' className='px-4 me-3' onClick={() => { router.replace('/signup'); mutate(null) }}>
+              <Button variant='light' className='px-4 me-3 ff-lato' onClick={() => { router.replace('/signup'); mutate(null) }}>
                 Sign Up
               </Button>
-              <Button variant='primary' className='px-4 me-3' onClick={() => { router.replace('/login'); mutate(null) }}>
+              <Button variant='primary' className='px-4 me-3 ff-lato' onClick={() => { router.replace('/login'); mutate(null) }}>
                 Login
               </Button>
             </div>

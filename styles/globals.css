@@ -1,4 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Newsreader:wght@500;600;700&display=swap");
+
+.ff-lato {
+  font-family: "Lato", sans-serif;
+}
+
+.ff-roboto {
+  font-family: "Roboto", sans-serif;
+}
+
+.ff-newsreader {
+  font-family: "Newsreader", serif;
+}
+
+.fw-400 {
+  font-weight: 400;
+}
+
+.fw-500 {
+  font-weight: 500;
+}
+
+.fw-600 {
+  font-weight: 600;
+}
+
+.fw-700 {
+  font-weight: 700;
+}
+
+.text-shadow {
+  text-shadow: 1px 1px rgba(255, 255, 255, 0.5);
+}
+
 body {
+  font-family: "Roboto", sans-serif;
   min-height: 100vh;
 }
 
@@ -61,7 +98,21 @@ body {
   overflow-x: auto;
   overflow-y: hidden;
   margin-top: 40px;
+  color: #376aed;
 }
+
+.tags::-webkit-scrollbar {
+  width: 1px;
+}
+
+/* .tags::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.tags::-webkit-scrollbar-thumb {
+  background: grey;
+  border-radius: 20px;
+} */
 
 .form-input {
   border-radius: 20px;

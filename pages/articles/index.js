@@ -10,8 +10,8 @@ const Articles = () => {
 
       <section class="bg-light p-5 rounded-lg jumbotron-2">
         <div className='mt-5 py-5'>
-          <h1 class="display-4">Start Writing an <br></br>Article</h1>
-          <p class="lead w-50">You can be an author by being active in reading artciles in a month or you can request to be an author if you have been a member for three months.</p>
+          <h1 class="display-4 ff-newsreader">Start Writing an <br></br>Article</h1>
+          <p class="lead w-50 text-shadow">You can be an author by being active in reading artciles in a month or you can request to be an author if you have been a member for three months.</p>
           <Button class="btn btn-primary btn-lg" href="#" role="button">Start Writing</Button>
         </div>
       </section>
