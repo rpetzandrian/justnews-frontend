@@ -1,19 +1,20 @@
 import axios from 'axios'
 import Image from 'next/image'
+import { useEffect } from 'react'
 import { Button, Col, Figure, Row } from 'react-bootstrap'
-import useSWR from 'swr'
 import Footer from '../components/Footer'
 import Navigation from '../components/Navigation'
 import PostCard from '../components/PostCard'
-import useUser from '../data/auth-user'
-import { getPost } from '../libs/fetcher/usePost'
-import { getCategory } from '../libs/fetcher/useCategory'
+import { useAuth, useCategory, useLatest, useRecommended } from './api'
+
 
 export default function Home({ latest, recommended }) {
-  const { user: auth, loading, loggedOut, mutate } = useUser();
-  const { data: category, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/category`, getCategory)
-  const { data: latestPosts, error: latestErr } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts?user_id=${auth?.data?.id || ''}&time=desc`, getPost, { initialData: latest })
-  const { data: recommendedPosts, error: recommErr } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts?user_id=${auth?.data?.id || ''}&recomended=true`, getPost, { initialData: recommended })
+  const { auth, loggedOut } = useAuth();
+  const { category } = useCategory()
+  const { latest: latestPosts, mutateLatest } = useLatest(auth?.data?.id, { initialData: latest })
+  const { recommended: recommendedPosts, mutateRecommended } = useRecommended(auth?.data?.id, { initialData: recommended })
+
+  // console.log(latestPosts, recommendedPosts, 'HOMEEEEEEEEEEEee')
 
   return (
     <>
@@ -61,7 +62,7 @@ export default function Home({ latest, recommended }) {
           {category?.map(e => {
             return (
               <div className='mx-2 figure'>
-                <img width={190} height={200} src={`${process.env.NEXT_PUBLIC_IMG_BASE_URL}${e?.image}`} />
+                <img width={190} height={200} src={`${process.env.img_url}${e?.image}`} />
                 <p className='mt-3 text-center'>{e?.category}</p>
               </div>
             )
@@ -105,14 +106,14 @@ export default function Home({ latest, recommended }) {
 }
 
 export async function getStaticProps() {
-  const resultLatest = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/posts?time=asc`, {
+  const resultLatest = await axios.get(`${process.env.api_url}/posts?time=asc`, {
     headers: {
       'Origin': 'http://localhost:3000'
     }
   })
   const latest = await resultLatest.data.data
 
-  const resultRecommended = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/posts?recomended=true`, {
+  const resultRecommended = await axios.get(`${process.env.api_url}/posts?recomended=true`, {
     headers: {
       'Origin': 'http://localhost:3000'
     }

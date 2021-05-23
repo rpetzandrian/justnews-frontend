@@ -10,11 +10,12 @@ import useUser from "../../../data/auth-user"
 import auth from "../../../libs/fetcher/auth"
 import { getCategory } from "../../../libs/fetcher/useCategory"
 import { addPost } from "../../../libs/fetcher/usePost"
+import { actionPosts, useAuth, useCategory } from "../../api"
 
 const WriteArticle = () => {
   const router = useRouter()
-  const { user: auth, loggedOut } = useUser()
-  const { data: category, error } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/category`, getCategory)
+  const { auth, loggedOut } = useAuth()
+  const { category } = useCategory()
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [cover, setCover] = useState(null)
 
@@ -32,7 +33,7 @@ const WriteArticle = () => {
     cover ? formData.append('cover', cover) : ''
     auth?.data?.id ? formData.append('user_id', auth.data.id) : ''
 
-    mutate(addPost(`${process.env.NEXT_PUBLIC_API_URL}/posts`, formData))
+    mutate(actionPosts.addPost(formData))
   }
 
   return (

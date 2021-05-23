@@ -6,16 +6,18 @@ import useSWR, { useSWRInfinite } from 'swr'
 import Footer from '../../components/Footer'
 import Navigation from '../../components/Navigation'
 import PostCard from '../../components/PostCard'
-import useUser from '../../data/auth-user'
+// import useUser from '../../data/auth-user'
 import { getPost } from '../../libs/fetcher/usePost'
+import { useAuth } from '../api'
 
 const Search = ({ initialPosts }) => {
-  const { user: auth, loading, loggedOut, mutate } = useUser();
+  const { auth, loading, loggedOut, mutate } = useAuth();
   const router = useRouter()
   const [query, setQuery] = useState({})
   const [page, setPage] = useState([])
-  const { data: posts } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts?user_id=${auth?.data?.id}&search=${router?.query?.search}&name=${router?.query?.name || ''}&time=${router?.query?.time || ''}&limit=1&page=${router?.query?.page || 1}`, getPost, { initialData: initialPosts })
+  const { data: posts } = useSWR(`${process.env.api_url}/posts?user_id=${auth?.data?.id}&search=${router?.query?.search}&name=${router?.query?.name || ''}&time=${router?.query?.time || ''}&limit=3&page=${router?.query?.page || 1}`, getPost, { initialData: initialPosts })
 
+  // console.log(posts, 'SEARCHCCCc')
   useEffect(() => {
     if (loggedOut) {
       router.replace('/')
@@ -130,7 +132,7 @@ const Search = ({ initialPosts }) => {
 export default Search
 
 export async function getStaticProps() {
-  const resultPost = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/posts?time=asc&limit=1`, {
+  const resultPost = await axios.get(`${process.env.api_url}/posts?time=asc&limit=3`, {
     headers: {
       'Origin': 'http://localhost:3000'
     }

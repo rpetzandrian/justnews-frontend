@@ -4,22 +4,24 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import useUser from "../../data/auth-user";
 import { useLogin } from '../../libs/fetcher/useAuth'
+import { actionAuth, useAuth } from "../api";
 
 const Login = () => {
   const router = useRouter();
-  const { user, mutate } = useUser();
+  const { auth, loggedOut, mutateAuth, errorAuth } = useAuth()
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const login = async (data) => {
-    await useLogin(data)
-    mutate()
+    // await useLogin(data)
+    // mutate()
+    mutateAuth(actionAuth.authLogin(data))
   }
 
   useEffect(() => {
-    if (user) {
+    if (auth) {
       router.replace('/')
     }
-  }, [user])
+  }, [auth])
 
   return (
     <>

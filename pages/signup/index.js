@@ -2,24 +2,23 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import useUser from "../../data/auth-user";
+import { actionAuth, useAuth } from '../api'
 import { useSignup } from "../../libs/fetcher/useAuth";
 
 const Signup = () => {
   const router = useRouter()
-  const { user, mutate } = useUser();
+  const { loggedOut, mutateAuth } = useAuth()
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const signup = async (data) => {
-    await useSignup(data)
-    mutate()
+    mutateAuth(actionAuth.authRegister(data))
   }
 
   useEffect(() => {
-    if (user) {
+    if (!loggedOut) {
       router.replace('/')
     }
-  }, [user])
+  }, [loggedOut])
 
   return (
     <>

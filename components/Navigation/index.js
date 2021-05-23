@@ -1,10 +1,14 @@
 import { useRouter } from 'next/router';
 import { Button, Container, Form, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap'
-import useUser from '../../data/auth-user';
+import { useAuth } from '../../pages/api';
 
 const Navigation = ({ changeKeyword, query }) => {
   const router = useRouter()
-  const { user, loading, loggedOut, mutate } = useUser();
+  const { loggedOut, mutateAuth } = useAuth();
+
+  const asActive = (arg) => {
+    if (router.pathname.split('/')[1] === arg) return 'active'
+  }
 
   return (
     <>
@@ -13,10 +17,10 @@ const Navigation = ({ changeKeyword, query }) => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" className='me-3' />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="d-flex mx-auto">
-            <Nav.Link href="/" className='mx-5 text-muted active'>Home</Nav.Link>
-            <Nav.Link href="/articles" className='mx-5 text-muted'>Articles</Nav.Link>
-            <Nav.Link href="/category" className='mx-5 text-muted'>Category</Nav.Link>
-            <Nav.Link href="/about" className='mx-5 text-muted'>About</Nav.Link>
+            <Nav.Link href="/" className={`mx-5 text-muted ${asActive('')}`}>Home</Nav.Link>
+            <Nav.Link href="/articles" className={`mx-5 text-muted ${asActive('articles')}`}>Articles</Nav.Link>
+            <Nav.Link href="/category" className={`mx-5 text-muted ${asActive('category')}`}>Category</Nav.Link>
+            <Nav.Link href="/about" className={`mx-5 text-muted ${asActive('about')}`}>About</Nav.Link>
           </Nav>
           {!loggedOut ? (
             <div className='d-flex align-items-center'>
@@ -34,10 +38,10 @@ const Navigation = ({ changeKeyword, query }) => {
             </div>
           ) : (
             <div>
-              <Button variant='light' className='px-4 me-3 ff-lato' onClick={() => { router.replace('/signup'); mutate(null) }}>
+              <Button variant='light' className='px-4 me-3 ff-lato' onClick={() => { router.replace('/signup'); mutateAuth(null) }}>
                 Sign Up
               </Button>
-              <Button variant='primary' className='px-4 me-3 ff-lato' onClick={() => { router.replace('/login'); mutate(null) }}>
+              <Button variant='primary' className='px-4 me-3 ff-lato' onClick={() => { router.replace('/login'); mutateAuth(null) }}>
                 Login
               </Button>
             </div>
