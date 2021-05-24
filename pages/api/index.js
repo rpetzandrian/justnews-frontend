@@ -1,6 +1,6 @@
 import { useAuth, actionAuth } from "./auth";
 import { useCategory, actionCategory } from "./category";
-import { useLatest, useRecommended, actionPosts } from './posts'
+import { useLatest, useRecommended, useByCategory, actionPosts } from './posts'
 import { useUser, actionUser } from './users'
 
 export {
@@ -10,6 +10,7 @@ export {
   actionCategory,
   useLatest,
   useRecommended,
+  useByCategory,
   actionPosts,
   useUser,
   actionUser

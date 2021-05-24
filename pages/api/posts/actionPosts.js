@@ -18,5 +18,17 @@ export const actionPosts = {
     globalDelete({
       url: `${process.env.api_url}/posts/unlikes/${data?.userId}/${data?.postId}`
     })
+  },
+
+  savePost: (data) => {
+    globalPatch({
+      url: `${process.env.api_url}/posts/save/${data?.userId}/${data?.postId}`,
+    })
+  },
+
+  unsavePost: (data) => {
+    globalDelete({
+      url: `${process.env.api_url}/posts/unsave/${data?.userId}/${data?.postId}`
+    })
   }
 }

@@ -2,8 +2,6 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import useUser from "../../data/auth-user";
-import { useLogin } from '../../libs/fetcher/useAuth'
 import { actionAuth, useAuth } from "../api";
 
 const Login = () => {
@@ -57,9 +55,9 @@ const Login = () => {
             <h4>Login</h4>
             <p className='text-muted mb-5'>Hey, welcome back to News Today!</p>
             <Form onSubmit={handleSubmit(login)}>
-              <Form.Group controlId="formBasicEmail" className='my-3'>
+              <Form.Group className='my-3'>
                 <Form.Label>Email address: </Form.Label>
-                <Form.Control className={`py-3 form-rounded ${errors.email ? 'is-invalid' : ''}`} type="email" placeholder="Enter email" {...register('email', { required: 'Please insert an email!' })} />
+                <Form.Control data-testid='email-input-login' className={`py-3 form-rounded ${errors.email ? 'is-invalid' : ''}`} type="email" placeholder="Enter email" {...register('email', { required: 'Please insert an email!' })} required />
               </Form.Group>
               <small className='text-danger'>{errors?.email?.message}</small>
 

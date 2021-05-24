@@ -4,7 +4,9 @@ import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }) {
   return (
-    <Component {...pageProps} />
+    <SWRConfig value={{ refreshInterval: 1000 }}>
+      <Component {...pageProps} />
+    </SWRConfig>
   )
 
 }

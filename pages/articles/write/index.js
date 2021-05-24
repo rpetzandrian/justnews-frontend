@@ -3,13 +3,8 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { Card, Col, Form, Row, Button } from "react-bootstrap"
 import { useForm } from "react-hook-form"
-import useSWR, { mutate } from "swr"
 import Footer from "../../../components/Footer"
 import Navigation from "../../../components/Navigation"
-import useUser from "../../../data/auth-user"
-import auth from "../../../libs/fetcher/auth"
-import { getCategory } from "../../../libs/fetcher/useCategory"
-import { addPost } from "../../../libs/fetcher/usePost"
 import { actionPosts, useAuth, useCategory } from "../../api"
 
 const WriteArticle = () => {

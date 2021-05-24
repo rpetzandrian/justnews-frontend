@@ -10,6 +10,10 @@ import PostCard from '../../components/PostCard'
 import { getPost } from '../../libs/fetcher/usePost'
 import { useAuth } from '../api'
 
+const tag_list = [
+  'jokowi', 'covid', 'mudik', 'technology', 'lebaran', 'teroris', 'radikalisme', 'palestine', 'tes aja'
+]
+
 const Search = ({ initialPosts }) => {
   const { auth, loading, loggedOut, mutate } = useAuth();
   const router = useRouter()
@@ -60,30 +64,9 @@ const Search = ({ initialPosts }) => {
       <section className='px-5 mt-5 popular-tags'>
         <h6>Related Tags</h6>
         <div className='d-flex mt-4 overflow-auto tags'>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
+          {tag_list.map(item => {
+            return <div className='mx-3'>#{item}</div>
+          })}
         </div>
       </section>
       <section className='px-5 mt-5 d-flex align-items-center filter-article'>

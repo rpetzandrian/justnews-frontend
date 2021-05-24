@@ -2,8 +2,14 @@ import Navigation from '../../components/Navigation';
 import Footer from '../../components/Footer';
 import { Button, Col, Dropdown, Row } from 'react-bootstrap';
 import PostCard from '../../components/PostCard';
+import { useAuth, useByCategory } from '../api';
+import axios from 'axios';
 
-const Articles = () => {
+const Articles = ({ postCategory }) => {
+  const { auth } = useAuth()
+  const { postByCategory } = useByCategory(auth?.data?.id, { initialData: postCategory })
+
+  console.log(postByCategory)
   return (
     <>
       <Navigation />
@@ -38,7 +44,7 @@ const Articles = () => {
         <p className='ms-3 pt-3'>Filter Article: sort by <strong>Category</strong></p>
       </section>
 
-      <section className='px-5 mt-5'>
+      {/* <section className='px-5 mt-5'>
         <h6>Todays news</h6>
         <Row className='g-2 mt-4 justify-content-lg-between'>
           <Col xs={12} sm={6} lg={4} xl={3}>
@@ -51,10 +57,23 @@ const Articles = () => {
             <PostCard />
           </Col>
         </Row>
-      </section>
+      </section> */}
+
+      {postByCategory && postByCategory?.map(item => {
+        return (
+          <section className='px-5 mt-5'>
+            <h6>{item?.category_name}</h6>
+            <div className='d-flex mt-4 overflow-auto tags'>
+              {item?.data_posts?.map(e => {
+                return <PostCard data={e} />
+              })}
+            </div>
+          </section>
+        )
+      })}
 
       <section className='w-100 mt-5 mb-3 text-center last'>
-        <p>Load another 30+ category</p>
+        <p>End of content</p>
       </section>
       <Footer />
     </>
@@ -62,3 +81,17 @@ const Articles = () => {
 }
 
 export default Articles;
+
+export async function getStaticProps() {
+  const resultCategory = await axios.get(`${process.env.api_url}/posts/category`, {
+    headers: {
+      'Origin': 'http://localhost:3000'
+    }
+  })
+  const postCategory = await resultCategory.data.data
+
+
+  return { props: { postCategory } }
+
+}
+

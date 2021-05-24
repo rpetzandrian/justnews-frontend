@@ -25,6 +25,24 @@ const PostCard = ({ data }) => {
     }
   }
 
+  // const save = () => {
+  //   if (!loggedOut) {
+  //     mutate(actionPosts.savePost({
+  //       userId: auth?.data?.id,
+  //       postId: data?.id
+  //     }))
+  //   }
+  // }
+
+  // const unsave = () => {
+  //   if (!loggedOut) {
+  //     mutate(actionPosts.unsavePost({
+  //       userId: auth?.data?.id,
+  //       postId: data?.id
+  //     }))
+  //   }
+  // }
+
   return (
     <>
       <div className="card mx-2 my-2 post-card shadow-lg border-0" style={{ minHeight: '140px', minWidth: '318px', maxHeight: '198px', maxWidth: '320px' }}>
@@ -51,7 +69,11 @@ const PostCard = ({ data }) => {
                     <small className='ms-2'>{moment(`${data?.publish_at}`).fromNow()}</small>
                   </div>
                   <div className='d-flex ms-2'>
-                    <img src='/icons/Bookmark.svg' alt='Save' />
+                    {!data?.is_saved ?
+                      (<img width='18px' src='/icons/Bookmark-white.svg' alt='Save' onClick={() => { save() }} />)
+                      :
+                      (<img src='/icons/Bookmark.svg' alt='Save' onClick={() => { unsave() }} />)
+                    }
                   </div>
                 </div>
               </div>

@@ -7,6 +7,9 @@ import Navigation from '../components/Navigation'
 import PostCard from '../components/PostCard'
 import { useAuth, useCategory, useLatest, useRecommended } from './api'
 
+const tag_list = [
+  'jokowi', 'covid', 'mudik', 'technology', 'lebaran', 'teroris', 'radikalisme', 'palestine', 'tes aja'
+]
 
 export default function Home({ latest, recommended }) {
   const { auth, loggedOut } = useAuth();
@@ -29,30 +32,9 @@ export default function Home({ latest, recommended }) {
       <section className='px-5 mt-5 popular-tags'>
         <h6>Popular Tags</h6>
         <div className='d-flex mt-4 overflow-auto tags'>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
-          <div className='mx-3'>#jokowi</div>
+          {tag_list?.map(item => {
+            return <div className='mx-3'>#{item}</div>
+          })}
         </div>
       </section>
 
@@ -72,7 +54,7 @@ export default function Home({ latest, recommended }) {
 
       <section className='px-5 mt-5 recommended'>
         <h6>Recommended</h6>
-        <div className='d-flex mt-4 overflow-auto'>
+        <div className='d-flex mt-4 overflow-auto tags'>
           {recommendedPosts?.post?.length < 1 ? (<div>Post Not Found!</div>) : (recommendedPosts?.post?.map(e => {
             return <PostCard data={e} />
           }))}

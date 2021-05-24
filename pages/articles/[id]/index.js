@@ -6,14 +6,14 @@ import { Button, Col, Form, Row } from 'react-bootstrap'
 import useSWR from 'swr'
 import Footer from '../../../components/Footer'
 import Navigation from '../../../components/Navigation'
-import useUser from '../../../data/auth-user'
 import { getById } from '../../../libs/fetcher/usePost'
+import { useAuth } from '../../api'
 
 const ArticleDetail = () => {
   const { id } = useRouter().query
   const router = useRouter()
-  const { user: auth, loggedOut, mutate: authMutate } = useUser();
-  const { data: post } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/posts/${id}?user_id=${auth?.data?.id}`, getById)
+  const { auth, loggedOut, mutateAuth } = useAuth();
+  const { data: post } = useSWR(`${process.env.api_url}/posts/${id}?user_id=${auth?.data?.id}`, getById)
 
   useEffect(() => {
     if (loggedOut) router.replace('/')
@@ -38,7 +38,7 @@ const ArticleDetail = () => {
           <section className='px-5 mt-5'>
             <Row className='align-items-center'>
               <Col xs={12} md={6} className='mt-3'>
-                <img className='article-cover' src={`${process.env.NEXT_PUBLIC_IMG_BASE_URL}${post?.cover} `} alt='' />
+                <img className='article-cover' src={`${process.env.img_url}${post?.cover} `} alt='' />
               </Col>
               <Col xs={12} md={6} className='mt-3'>
                 <h3>{post?.title}</h3>
