@@ -1,4 +1,4 @@
-## Chatime
+## Justnews
 
 JustNews is a news provider app. In this repository, This is a Frontend for JustNews App. This implementing [JustNews Backend](https://github.com/rpetzandrian/justnews-backend) for backend side.
 
