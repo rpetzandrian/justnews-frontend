@@ -16,10 +16,10 @@ const Login = () => {
   }
 
   useEffect(() => {
-    if (auth) {
+    if (!loggedOut) {
       router.replace('/')
     }
-  }, [auth])
+  }, [loggedOut])
 
   return (
     <>

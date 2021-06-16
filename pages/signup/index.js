@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { actionAuth, useAuth } from '../api'
-import { useSignup } from "../../libs/fetcher/useAuth";
+// import { useSignup } from "../../libs/fetcher/useAuth";
 
 const Signup = () => {
   const router = useRouter()
