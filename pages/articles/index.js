@@ -4,12 +4,14 @@ import { Button, Col, Dropdown, Row } from 'react-bootstrap';
 import PostCard from '../../components/PostCard';
 import { useAuth, useByCategory } from '../api';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 const Articles = ({ postCategory }) => {
+  const router = useRouter()
   const { auth } = useAuth()
   const { postByCategory } = useByCategory(auth?.data?.id, { initialData: postCategory })
 
-  console.log(postByCategory)
+  // console.log(postByCategory)
   return (
     <>
       <Navigation />
@@ -18,7 +20,7 @@ const Articles = ({ postCategory }) => {
         <div className='mt-5 py-5'>
           <h1 class="display-4 ff-newsreader">Start Writing an <br></br>Article</h1>
           <p class="lead w-50 text-shadow">You can be an author by being active in reading artciles in a month or you can request to be an author if you have been a member for three months.</p>
-          <Button class="btn btn-primary btn-lg" href="#" role="button">Start Writing</Button>
+          <Button class="btn btn-primary btn-lg" href="#" role="button" onClick={() => router.push('/articles/write')}>Start Writing</Button>
         </div>
       </section>
 

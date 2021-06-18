@@ -30,5 +30,17 @@ export const actionPosts = {
     globalDelete({
       url: `${process.env.api_url}/posts/unsave/${data?.userId}/${data?.postId}`
     })
+  },
+
+  addComment: (data, token, cb) => {
+    globalPost({
+      url: `${process.env.api_url}/comments/${data?.user_id}`,
+      data: data,
+      headers: {
+        'user-token': `Bearer ${token}`
+      }
+    })
+
+    cb({ text: '' })
   }
 }

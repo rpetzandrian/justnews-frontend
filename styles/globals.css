@@ -191,6 +191,10 @@ body {
   box-shadow: none;
   border-color: #000;
 }
+
+.notif-scroll::-webkit-scrollbar {
+  width: 0;
+}
 /* .rounded {
   border-radius: 100px;
 } */

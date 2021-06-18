@@ -9,16 +9,16 @@ import { actionPosts, useAuth, useCategory } from "../../api"
 
 const WriteArticle = () => {
   const router = useRouter()
-  const { auth, loggedOut } = useAuth()
+  const { auth, loggedOut, mutateAuth, loadingAuth } = useAuth()
   const { category } = useCategory()
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [cover, setCover] = useState(null)
 
-  useEffect(() => {
-    if (loggedOut) {
-      router.replace('/')
-    }
-  }, [loggedOut])
+  // useEffect(() => {
+  //   if (loggedOut) {
+  //     router.replace('/')
+  //   }
+  // }, [loggedOut])
 
   const add = (data) => {
     const formData = new FormData()
@@ -26,11 +26,11 @@ const WriteArticle = () => {
     data.category_id ? formData.append('category_id', data.category_id) : ''
     data.text ? formData.append('text', data.text) : ''
     cover ? formData.append('cover', cover) : ''
-    auth?.data?.id ? formData.append('user_id', auth.data.id) : ''
+    auth?.data?.id ? formData.append('user_id', auth?.data?.id) : ''
 
-    mutate(actionPosts.addPost(formData))
+    actionPosts.addPost(formData)
   }
-
+  console.log(auth)
   return (
     <>
       <Navigation />

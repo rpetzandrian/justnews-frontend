@@ -48,12 +48,12 @@ const PostCard = ({ data }) => {
       <div className="card mx-2 my-2 post-card shadow-lg border-0" style={{ minHeight: '140px', minWidth: '318px', maxHeight: '198px', maxWidth: '320px' }}>
         <div className="row g-0">
           <div className="col-4 p-0">
-            <img width='100px' height='140px' src={`${process.env.img_url}${data?.cover}`} alt="cover" onClick={() => router.push(`/articles/${data?.id}`)} />
+            <img width='100px' height='140px' src={`${process.env.img_url}${data?.cover}`} alt="cover" onClick={() => router.push(`/articles/${data?.slug}`)} />
           </div>
           <div className="col-8">
             <div className="card-body d-flex flex-column h-100">
               <h5 className="card-title">{data?.tags}</h5>
-              <p className="card-text" onClick={() => router.push(`/articles/${data?.id}`)}>{data?.title}</p>
+              <p className="card-text" onClick={() => router.push(`/articles/${data?.slug}`)}>{data?.title}</p>
               <div className="card-text mt-auto">
                 <div className='d-flex text-muted'>
                   <div className='d-flex ms-2 justify-content-center align-items-center'>
@@ -62,7 +62,7 @@ const PostCard = ({ data }) => {
                       :
                       (<img src='/icons/likes-blue.svg' alt='Add like' onClick={() => { unlike() }} />)
                     }
-                    <small className='ms-2'>{data?.like}</small>
+                    <small className='ms-2'>{data?.like || 0}</small>
                   </div>
                   <div className='d-flex ms-2 justify-content-center align-items-center'>
                     <img src='/icons/time.svg' alt='Add like' />

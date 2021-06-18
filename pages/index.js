@@ -76,7 +76,7 @@ export default function Home({ latest, recommended }) {
 
       <section className='p-5 mt-5 latest-news'>
         <h6>Latest News</h6>
-        <div className='d-flex justify-content-evenly flex-wrap mt-3'>
+        <div className='d-flex justify-content-center flex-wrap mt-3'>
           {latestPosts?.post?.length < 1 ? (<div>Post Not Found!</div>) : (latestPosts?.post?.map(e => {
             return <PostCard data={e} />
           }))}
@@ -88,7 +88,7 @@ export default function Home({ latest, recommended }) {
 }
 
 export async function getStaticProps() {
-  const resultLatest = await axios.get(`${process.env.api_url}/posts?time=asc`, {
+  const resultLatest = await axios.get(`${process.env.api_url}/posts?time=desc`, {
     headers: {
       'Origin': 'http://localhost:3000'
     }

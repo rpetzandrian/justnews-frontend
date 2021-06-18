@@ -1,7 +1,8 @@
 import { useAuth, actionAuth } from "./auth";
 import { useCategory, actionCategory } from "./category";
-import { useLatest, useRecommended, useByCategory, actionPosts } from './posts'
-import { useUser, actionUser } from './users'
+import { useLatest, useRecommended, useByCategory, actionPosts, useComments } from './posts';
+import { useUser, actionUser } from './users';
+import { useNotif, actionNotif } from "./notification";
 
 export {
   useAuth,
@@ -11,7 +12,10 @@ export {
   useLatest,
   useRecommended,
   useByCategory,
+  useComments,
   actionPosts,
   useUser,
-  actionUser
+  actionUser,
+  useNotif,
+  actionNotif
 }

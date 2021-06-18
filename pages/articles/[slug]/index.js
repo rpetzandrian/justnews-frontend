@@ -3,21 +3,38 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
+import { useForm } from 'react-hook-form'
 import useSWR from 'swr'
 import Footer from '../../../components/Footer'
 import Navigation from '../../../components/Navigation'
 import { getById } from '../../../libs/fetcher/usePost'
-import { useAuth } from '../../api'
+import { actionPosts, useAuth, useComments, useUser } from '../../api'
 
 const ArticleDetail = () => {
-  const { id } = useRouter().query
+  const { slug } = useRouter().query
   const router = useRouter()
   const { auth, loggedOut, mutateAuth } = useAuth();
-  const { data: post } = useSWR(`${process.env.api_url}/posts/${id}?user_id=${auth?.data?.id}`, getById)
+  const { data: post } = useSWR(`${process.env.api_url}/posts/${slug}?user_id=${auth?.data?.id}`, getById)
+  const { data: user } = useUser({ id: auth?.data?.id, token: auth?.data?.token })
+  const { comments, mutateComment } = useComments(post?.id)
+
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
   useEffect(() => {
     if (loggedOut) router.replace('/')
   }, [loggedOut])
+
+  console.log(comments, 'dataaaaaa')
+
+  const submitComments = data => {
+    let formData = {
+      user_id: auth?.data?.id,
+      post_id: post?.id,
+      text: data?.text,
+    }
+
+    mutateComment(actionPosts.addComment(formData, auth?.data?.token, reset))
+  }
 
   return (
     <>
@@ -72,31 +89,33 @@ const ArticleDetail = () => {
           <Col xs={12} md={10}>
             <div className='d-flex align-items-center w-100 mt-3 form-add-comment'>
               <div>
-                <Image width={55} height={55} src='/images/profile-photo.png' alt='' />
+                <img width='55px' height='55px' src={user?.photo ? `${process.env.img_url}${user?.photo}` : '/images/profile-photo.png'} alt='' className='rounded-2' />
               </div>
               <div className='mx-3 w-100'>
                 <p className='p-0'>You</p>
                 <div className='d-flex justify-content-start align-items-center w-100'>
-                  <Form className='p-0'>
+                  <Form className='p-0 w-100' onSubmit={handleSubmit(submitComments)}>
                     <Form.Group controlId="exampleForm.ControlTextarea1">
-                      <Form.Control placeholder='Insert a comment' as="textarea" rows={1} className='comment-form' />
+                      <Form.Control placeholder='Insert a comment' as="textarea" rows={1} className='comment-form' {...register('text')} />
                     </Form.Group>
                   </Form>
-                  <p className='mx-3'>Submit</p>
+                  <p className='mx-3' onClick={handleSubmit(submitComments)} >Submit</p>
                 </div>
               </div>
             </div>
-
-            <div className='d-flex align-items-center w-100 mt-3'>
-              <div>
-                <Image width={55} height={55} src='/images/profile-photo.png' alt='' />
-              </div>
-              <div className='mx-3 w-100'>
-                <p className='p-0'>User - 1 min ago</p>
-                <p>Ini commentIni commentIni commentIni commentIni commentIni commentIni commentIni comment</p>
-              </div>
-            </div>
-
+            {comments && comments?.map(item => {
+              return (<>
+                <div className='d-flex align-items-center w-100 mt-3'>
+                  <div>
+                    <img width='55px' height='55px' src={item?.photo ? `${process.env.img_url}${item?.photo}` : '/images/profile-photo.png'} alt='' className='rounded-2' />
+                  </div>
+                  <div className='mx-3 w-100'>
+                    <p className='p-0'>{item?.user_id === user?.id ? 'You' : item?.username || item?.phone} - {moment(item?.created_at).fromNow()}</p>
+                    <p>{item?.text}</p>
+                  </div>
+                </div>
+              </>)
+            })}
             <p className='text-muted mt-4 mb-5'>No comment left</p>
           </Col>
         </Row>

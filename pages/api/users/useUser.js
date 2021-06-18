@@ -1,22 +1,25 @@
 import useSWR from "swr"
 import { globalGet } from "../../../libs/fetcher/fetcher"
 
-export const useUser = (userId, token, initialData) => {
-  const getUser = () =>
-    globalGet({
-      url: `${process.env.api_url}/users/${userId}`,
+export const useUser = (form) => {
+  const getUser = () => {
+    return globalGet({
+      url: `${process.env.api_url}/users/${form?.id}`,
       headers: {
-        'user-token': `Bearer ${token}`
+        'user-token': `Bearer ${form?.token}`
       }
     })
+  }
 
-  const { data, mutate, error } = useSWR(userId ? 'get_user' : null, getUser, initialData)
+  const { data, mutate, error } = useSWR(!form?.id && !form?.token ? null : 'get_user', getUser)
   const loadingUser = !error && !data
+  console.log(data)
 
   return {
-    user: data,
+    data,
     mutateUser: mutate,
     loadingUser,
     errorUser: error
   }
+
 }

@@ -1,13 +1,22 @@
 import { useRouter } from 'next/router';
-import { Button, Container, Form, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap'
-import { useAuth } from '../../pages/api';
+import { useState } from 'react';
+import { Button, Container, Dropdown, Form, FormControl, Nav, Navbar, NavDropdown } from 'react-bootstrap'
+import { actionNotif, useAuth, useNotif, useUser } from '../../pages/api';
+import NotificationCard from '../NotificationCard';
 
 const Navigation = ({ changeKeyword, query }) => {
   const router = useRouter()
-  const { loggedOut, mutateAuth } = useAuth();
+  const { auth, loggedOut, mutateAuth } = useAuth();
+  const { data: user, mutateUser } = useUser({ id: auth?.data?.id, token: auth?.data?.token });
+  const [notifShow, setNotifShow] = useState(false);
+  const { notif, mutateNotif } = useNotif({ userId: auth?.data?.id })
 
   const asActive = (arg) => {
     if (router.pathname.split('/')[1] === arg) return 'active'
+  }
+
+  const readNotif = () => {
+    mutateNotif(actionNotif.readNotif(auth?.data?.id))
   }
 
   return (
@@ -30,10 +39,10 @@ const Navigation = ({ changeKeyword, query }) => {
                 <small className='text-danger ms-3 mt-2'></small>
               </div>
               <div className='mx-3 notification'>
-                <img src='/icons/notif.svg' als='notif' />
+                <img src={`/icons/${notif?.unreadNotif > 0 ? 'notif-read' : 'notif'}.svg`} als='notif' onClick={() => { setNotifShow(!notifShow); notif?.unreadNotif > 0 ? readNotif() : null }} />
               </div>
               <div className='mx-3 p-1 profile-photo'>
-                <img src='/images/placeholder.png' alt='photo' className='img-profile' />
+                <img width='36px' height='36px' src={`${process.env.img_url}${user?.photo}`} alt='photo' className='rounded-circle img-profile' onClick={() => router.push('/profile')} />
               </div>
             </div>
           ) : (
@@ -48,6 +57,7 @@ const Navigation = ({ changeKeyword, query }) => {
           )}
         </Navbar.Collapse>
       </Navbar >
+      <NotificationCard show={notifShow} data={notif?.notif} />
     </>
   )
 }
