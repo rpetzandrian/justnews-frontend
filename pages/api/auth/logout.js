@@ -3,10 +3,8 @@ import axios from 'axios'
 
 export default withIronSession(
   async (req, res) => {
-    console.log(req.body)
-    req.session.set("user", req.body)
-    await req.session.save()
-    return res.status(200).send("");
+    req.session.destroy();
+    res.json({ isLoggedIn: false });
   },
   {
     cookieName: "user-session",

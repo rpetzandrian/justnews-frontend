@@ -1,17 +1,17 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import useUser from "../../data/auth-user";
+import { useAuth } from "../api";
 
 const Forgot = () => {
   const router = useRouter()
-  const { user, mutate } = useUser();
+  const { auth, loggedOut, loadingAuth } = useAuth()
 
   useEffect(() => {
-    if (user) {
+    if (!loggedOut && !loadingAuth) {
       router.replace('/')
     }
-  }, [user])
+  }, [loggedOut, auth])
 
   return (
     <>

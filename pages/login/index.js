@@ -6,20 +6,19 @@ import { actionAuth, useAuth } from "../api";
 
 const Login = () => {
   const router = useRouter();
-  const { auth, loggedOut, mutateAuth, errorAuth } = useAuth()
+  const { auth, loggedOut, mutateAuth, loadingAuth } = useAuth()
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const login = async (data) => {
-    // await useLogin(data)
-    // mutate()
-    mutateAuth(actionAuth.authLogin(data))
+  const login = (data) => {
+    actionAuth.authLogin(data)
+    // mutateAuth('get_auth')
   }
 
   useEffect(() => {
-    if (!loggedOut) {
+    if (!loggedOut && !loadingAuth) {
       router.replace('/')
     }
-  }, [loggedOut])
+  }, [loggedOut, auth])
 
   return (
     <>

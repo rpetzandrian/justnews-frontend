@@ -12,12 +12,15 @@ const tag_list = [
 ]
 
 export default function Home({ latest, recommended }) {
-  const { auth, loggedOut } = useAuth();
+  const { auth, loggedOut, mutateAuth } = useAuth();
   const { category } = useCategory()
   const { latest: latestPosts, mutateLatest } = useLatest(auth?.data?.id, { initialData: latest })
   const { recommended: recommendedPosts, mutateRecommended } = useRecommended(auth?.data?.id, { initialData: recommended })
 
   // console.log(latestPosts, recommendedPosts, 'HOMEEEEEEEEEEEee')
+  // console.log(latest, recommended)
+
+  // console.log(loggedOut, 'log')
 
   return (
     <>
@@ -55,6 +58,11 @@ export default function Home({ latest, recommended }) {
       <section className='px-5 mt-5 recommended'>
         <h6>Recommended</h6>
         <div className='d-flex mt-4 overflow-auto tags'>
+          {loggedOut ?
+            recommended?.post?.length < 1 ? (<div>Post Not Found!</div>) : (recommended?.post?.map(e => {
+              return <PostCard data={e} />
+            })
+            ) : ''}
           {recommendedPosts?.post?.length < 1 ? (<div>Post Not Found!</div>) : (recommendedPosts?.post?.map(e => {
             return <PostCard data={e} />
           }))}
@@ -77,6 +85,11 @@ export default function Home({ latest, recommended }) {
       <section className='p-5 mt-5 latest-news'>
         <h6>Latest News</h6>
         <div className='d-flex justify-content-center flex-wrap mt-3'>
+          {loggedOut ?
+            latest?.post?.length < 1 ? (<div>Post Not Found!</div>) : (latest?.post?.map(e => {
+              return <PostCard data={e} />
+            })
+            ) : ''}
           {latestPosts?.post?.length < 1 ? (<div>Post Not Found!</div>) : (latestPosts?.post?.map(e => {
             return <PostCard data={e} />
           }))}

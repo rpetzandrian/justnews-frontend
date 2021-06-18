@@ -13,7 +13,7 @@ import { actionPosts, useAuth, useComments, useUser } from '../../api'
 const ArticleDetail = () => {
   const { slug } = useRouter().query
   const router = useRouter()
-  const { auth, loggedOut, mutateAuth } = useAuth();
+  const { auth, loggedOut, mutateAuth, loadingAuth } = useAuth();
   const { data: post } = useSWR(`${process.env.api_url}/posts/${slug}?user_id=${auth?.data?.id}`, getById)
   const { data: user } = useUser({ id: auth?.data?.id, token: auth?.data?.token })
   const { comments, mutateComment } = useComments(post?.id)
@@ -21,8 +21,8 @@ const ArticleDetail = () => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
   useEffect(() => {
-    if (loggedOut) router.replace('/')
-  }, [loggedOut])
+    if (!loadingAuth && loggedOut) router.replace('/')
+  }, [auth, loadingAuth])
 
   console.log(comments, 'dataaaaaa')
 

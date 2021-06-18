@@ -9,11 +9,15 @@ import { actionNotif, useAuth, useNotif } from "../api";
 
 const nofication = () => {
   const modaldelete = withReactContent(Swal)
-  const { auth } = useAuth()
+  const { auth, loadingAuth, loggedOut } = useAuth()
   const { notif, mutateNotif } = useNotif({ userId: auth?.data?.id })
   const [showCheckbox, setShowCheckbox] = useState(false)
   const [updateSelected, setUpdateSelected] = useState(false)
   const [selectedNotif, setSelectedNotif] = useState(null)
+
+  useEffect(() => {
+    if (!loadingAuth && loggedOut) router.replace('/')
+  }, [auth, loadingAuth])
 
   useEffect(() => {
     let selectedBox = []

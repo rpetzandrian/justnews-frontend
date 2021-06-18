@@ -14,11 +14,9 @@ const WriteArticle = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [cover, setCover] = useState(null)
 
-  // useEffect(() => {
-  //   if (loggedOut) {
-  //     router.replace('/')
-  //   }
-  // }, [loggedOut])
+  useEffect(() => {
+    if (!loadingAuth && loggedOut) router.replace('/')
+  }, [auth, loadingAuth])
 
   const add = (data) => {
     const formData = new FormData()

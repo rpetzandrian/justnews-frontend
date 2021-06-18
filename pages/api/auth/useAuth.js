@@ -23,7 +23,7 @@ export const useAuth = () => {
 
   const getUser = () => {
     return axios({
-      url: '../api/auth/user',
+      url: 'api/auth/user',
       method: 'GET',
       headers: { 'Content-Type': 'aplication/json' }
     }).then(res => {
@@ -40,6 +40,7 @@ export const useAuth = () => {
   }
 
   const { data: auth, mutate: mutateAuth, error: errorAuth } = useSWR('auth_login', getUser);
+  console.log(auth, 'AUTHHHHH')
   const loadingAuth = !auth && !errorAuth;
   const loggedOut = auth?.loggedOut
 

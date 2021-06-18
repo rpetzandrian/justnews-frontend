@@ -15,7 +15,7 @@ const tag_list = [
 ]
 
 const Search = ({ initialPosts }) => {
-  const { auth, loading, loggedOut, mutate } = useAuth();
+  const { auth, loadingAuth, loggedOut, mutate } = useAuth();
   const router = useRouter()
   const [query, setQuery] = useState({})
   const [page, setPage] = useState([])
@@ -23,10 +23,8 @@ const Search = ({ initialPosts }) => {
 
   // console.log(posts, 'SEARCHCCCc')
   useEffect(() => {
-    if (loggedOut) {
-      router.replace('/')
-    }
-  }, [loggedOut])
+    if (!loadingAuth && loggedOut) router.replace('/')
+  }, [auth, loadingAuth])
 
   useEffect(() => {
     let total = []

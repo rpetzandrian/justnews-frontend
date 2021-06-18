@@ -8,9 +8,12 @@ import { useRouter } from 'next/router';
 
 const Articles = ({ postCategory }) => {
   const router = useRouter()
-  const { auth } = useAuth()
+  const { auth, loggedOut, loadingAuth } = useAuth()
   const { postByCategory } = useByCategory(auth?.data?.id, { initialData: postCategory })
 
+  useEffect(() => {
+    if (!loadingAuth && loggedOut) router.replace('/')
+  }, [auth, loadingAuth])
   // console.log(postByCategory)
   return (
     <>

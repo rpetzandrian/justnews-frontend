@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { useForm } from 'react-hook-form'
-import { actionUser, useAuth, useUser } from '../api'
+import { actionAuth, actionUser, useAuth, useUser } from '../api'
 
 
 const Profile = () => {
@@ -45,7 +45,6 @@ const Profile = () => {
   return (
     <>
       {!loadingAuth && !loadingUser && (<>
-
         <Navigation />
         <Container fluid>
           <Row>
@@ -110,7 +109,7 @@ const Profile = () => {
                   <p className='pt-3'>Help</p>
                   <img className='' src='/icons/angle-right.svg' alt='right-angle'></img>
                 </div>
-                <div className='d-flex justify-content-between align-items-center' onClick={() => { localStorage.clear(); mutateAuth(null) }}>
+                <div className='d-flex justify-content-between align-items-center' onClick={() => { mutateAuth(actionAuth.authLogout()) }}>
                   <p className='pt-3'>Logout</p>
                   <img className='' src='/icons/angle-right.svg' alt='right-angle'></img>
                 </div>
