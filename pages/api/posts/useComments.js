@@ -6,7 +6,7 @@ export const useComments = (postId) => {
     url: `${process.env.api_url}/comments/${postId}`
   })
 
-  const { data, mutate, error } = useSWR(!postId ? null : 'get_comment', getComment, {})
+  const { data, mutate, error } = useSWR(!postId ? null : 'get_comment', getComment, { refreshInterval: 3000 })
   const loading = !data && !error
 
   return {

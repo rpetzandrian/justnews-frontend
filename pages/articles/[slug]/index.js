@@ -2,19 +2,20 @@ import moment from 'moment'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
+import ReactMarkdown from 'react-markdown'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import useSWR from 'swr'
 import Footer from '../../../components/Footer'
 import Navigation from '../../../components/Navigation'
 import { getById } from '../../../libs/fetcher/usePost'
-import { actionPosts, useAuth, useComments, useUser } from '../../api'
+import { actionNotif, actionPosts, useAuth, useComments, useUser } from '../../api'
 
 const ArticleDetail = () => {
   const { slug } = useRouter().query
   const router = useRouter()
   const { auth, loggedOut, mutateAuth, loadingAuth } = useAuth();
-  const { data: post } = useSWR(`${process.env.api_url}/posts/${slug}?user_id=${auth?.data?.id}`, getById)
+  const { data: post, mutate: mutateById } = useSWR(`${process.env.api_url}/posts/${slug}?user_id=${auth?.data?.id}`, getById)
   const { data: user } = useUser({ id: auth?.data?.id, token: auth?.data?.token })
   const { comments, mutateComment } = useComments(post?.id)
 
@@ -24,7 +25,7 @@ const ArticleDetail = () => {
     if (!loadingAuth && loggedOut) router.replace('/')
   }, [auth, loadingAuth])
 
-  console.log(comments, 'dataaaaaa')
+  // console.log(post, 'dataaaaaa')
 
   const submitComments = data => {
     let formData = {
@@ -34,6 +35,15 @@ const ArticleDetail = () => {
     }
 
     mutateComment(actionPosts.addComment(formData, auth?.data?.token, reset))
+    if (auth?.data?.id != post?.user_id) {
+      actionNotif.pushNotif({
+        from: auth?.data?.id,
+        user_id: post?.user_id,
+        post_id: post?.id,
+        type: 'comment',
+        message: 'sent you a comment'
+      })
+    }
   }
 
   return (
@@ -76,9 +86,7 @@ const ArticleDetail = () => {
           </section>
 
           <section className='px-5 mt-3 article-text'>
-            <p>
-              {post?.text}
-            </p>
+            <ReactMarkdown children={post?.text} />
           </section>
         </>
       )}

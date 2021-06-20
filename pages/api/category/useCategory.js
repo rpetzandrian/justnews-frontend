@@ -5,7 +5,7 @@ export const useCategory = () => {
   const getCategory = () => globalGet({
     url: `${process.env.api_url}/category`
   })
-  const { data: category, mutate: mutateCategory, error: errorCategory } = useSWR('get_category', getCategory)
+  const { data: category, mutate: mutateCategory, error: errorCategory } = useSWR('get_category', getCategory, { refreshInterval: 5000 })
 
   const loadingCategory = !category && !errorCategory;
 

@@ -7,7 +7,7 @@ export const useLatest = (userId, initialData) => {
   })
 
 
-  const { data, mutate, error } = useSWR(userId ? 'get_latest' : null, getlatest, { initialData, revalidateOnMount: true })
+  const { data, mutate, error } = useSWR(userId ? 'get_latest' : null, getlatest, { initialData, revalidateOnMount: true, refreshInterval: 2000 })
   console.log(data, 'dataaa')
   const loadingLatest = !data && !error;
 

@@ -1,51 +1,60 @@
 import moment from 'moment'
 import { useRouter } from 'next/router'
-import { mutate } from 'swr'
-import { actionPosts, useAuth } from '../../pages/api'
+import { actionNotif, actionPosts, useAuth } from '../../pages/api'
 
-const PostCard = ({ data }) => {
+const PostCard = ({ data, cb }) => {
   const router = useRouter()
   const { auth, loggedOut } = useAuth()
 
   const like = () => {
     if (!loggedOut) {
-      mutate(actionPosts.likePost({
+      cb(actionPosts.likePost({
         userId: auth?.data?.id,
         postId: data?.id
       }))
+
+      if (auth?.user?.id != data?.user_id) {
+        actionNotif.pushNotif({
+          user_id: data?.user_id,
+          from: auth?.data?.id,
+          type: 'like',
+          message: 'just liked your post',
+          post_id: data?.id
+        })
+      }
     }
   }
 
   const unlike = () => {
     if (!loggedOut) {
-      mutate(actionPosts.unlikePost({
+      cb(actionPosts.unlikePost({
         userId: auth?.data?.id,
         postId: data?.id
       }))
     }
   }
 
-  // const save = () => {
-  //   if (!loggedOut) {
-  //     mutate(actionPosts.savePost({
-  //       userId: auth?.data?.id,
-  //       postId: data?.id
-  //     }))
-  //   }
-  // }
+  const save = () => {
+    if (!loggedOut) {
+      cb(actionPosts.savePost({
+        userId: auth?.data?.id,
+        postId: data?.id
+      }))
+    }
+  }
 
-  // const unsave = () => {
-  //   if (!loggedOut) {
-  //     mutate(actionPosts.unsavePost({
-  //       userId: auth?.data?.id,
-  //       postId: data?.id
-  //     }))
-  //   }
-  // }
+  const unsave = () => {
+    if (!loggedOut) {
+      cb(actionPosts.unsavePost({
+        userId: auth?.data?.id,
+        postId: data?.id
+      }))
+    }
+  }
 
   return (
     <>
-      <div className="card mx-2 my-2 post-card shadow-lg border-0" style={{ minHeight: '140px', minWidth: '318px', maxHeight: '198px', maxWidth: '320px' }}>
+      <div className="card mx-2 my-2 post-card shadow-sm border-0" style={{ minHeight: '140px', minWidth: '318px', maxHeight: '198px', maxWidth: '320px' }}>
         <div className="row g-0">
           <div className="col-4 p-0">
             <img width='100px' height='140px' src={`${process.env.img_url}${data?.cover}`} alt="cover" onClick={() => router.push(`/articles/${data?.slug}`)} />

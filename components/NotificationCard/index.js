@@ -17,7 +17,7 @@ const NotificationCard = ({ show, data }) => {
                     </div>
                   </div>
                   <div className='ms-1 w-100 pt-3'>
-                    {item?.type === 'like' ? (
+                    {item?.type === 'like' || item?.type === 'comment' ? (
                       <p className='pb-2 m-0'>{`${item?.from_username} ${item?.message}`}</p>
                     ) : (
                       <p className='pb-2 m-0'>{item?.message}</p>

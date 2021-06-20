@@ -6,7 +6,7 @@ export const useRecommended = (userId, initialData) => {
     url: `${process.env.api_url}/posts?user_id=${userId}&recommended=true`,
   })
 
-  const { data, mutate, error } = useSWR(userId ? 'get_recommended' : null, getrecommended, { initialData, revalidateOnMount: true })
+  const { data, mutate, error } = useSWR(userId ? 'get_recommended' : null, getrecommended, { initialData, revalidateOnMount: true, refreshInterval: 2000 })
 
   const loadingRecommended = !data && !error;
 

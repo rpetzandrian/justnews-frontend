@@ -23,7 +23,7 @@ export const useAuth = () => {
 
   const getUser = () => {
     return axios({
-      url: 'api/auth/user',
+      url: '../api/auth/user',
       method: 'GET',
       headers: { 'Content-Type': 'aplication/json' }
     }).then(res => {

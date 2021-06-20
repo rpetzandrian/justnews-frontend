@@ -6,7 +6,7 @@ export const useNotif = (form) => {
     url: `${process.env.api_url}/notif/${form?.userId}`,
   })
 
-  const { data, mutate, error } = useSWR(!form?.userId ? null : 'get_Notif', getNotif, {})
+  const { data, mutate, error } = useSWR(!form?.userId ? null : 'get_Notif', getNotif, { refreshInterval: 3000 })
   const loadNotif = !data && !error
 
   return {

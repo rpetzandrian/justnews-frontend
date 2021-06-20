@@ -5,16 +5,18 @@ import PostCard from '../../components/PostCard';
 import { useAuth, useByCategory } from '../api';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const Articles = ({ postCategory }) => {
+  2
   const router = useRouter()
   const { auth, loggedOut, loadingAuth } = useAuth()
-  const { postByCategory } = useByCategory(auth?.data?.id, { initialData: postCategory })
+  const { postByCategory, mutateByCategory } = useByCategory(auth?.data?.id, postCategory)
 
   useEffect(() => {
     if (!loadingAuth && loggedOut) router.replace('/')
   }, [auth, loadingAuth])
-  // console.log(postByCategory)
+  console.log(postByCategory)
   return (
     <>
       <Navigation />
@@ -70,7 +72,7 @@ const Articles = ({ postCategory }) => {
             <h6>{item?.category_name}</h6>
             <div className='d-flex mt-4 overflow-auto tags'>
               {item?.data_posts?.map(e => {
-                return <PostCard data={e} />
+                return <PostCard data={e} cb={mutateByCategory} />
               })}
             </div>
           </section>

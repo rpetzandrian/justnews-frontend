@@ -6,13 +6,13 @@ export const useByCategory = (userId, initialData) => {
     url: `${process.env.api_url}/posts/category?user_id=${userId}`,
   })
 
-  const { data, mutate, error } = useSWR(userId ? 'get_by_category' : null, getPosts, initialData)
+  const { data, mutate, error } = useSWR(userId ? 'get_by_category' : null, getPosts, { initialData: initialData, refreshInterval: 2000 })
   const loadingPost = !data && !error;
 
   return {
     postByCategory: data,
     loadingPost,
-    mutateLatest: mutate,
+    mutateByCategory: mutate,
     errorpostByCategory: error
   }
 

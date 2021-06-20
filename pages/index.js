@@ -64,7 +64,7 @@ export default function Home({ latest, recommended }) {
             })
             ) : ''}
           {recommendedPosts?.post?.length < 1 ? (<div>Post Not Found!</div>) : (recommendedPosts?.post?.map(e => {
-            return <PostCard data={e} />
+            return <PostCard data={e} cb={mutateRecommended} />
           }))}
         </div>
       </section>
@@ -91,7 +91,7 @@ export default function Home({ latest, recommended }) {
             })
             ) : ''}
           {latestPosts?.post?.length < 1 ? (<div>Post Not Found!</div>) : (latestPosts?.post?.map(e => {
-            return <PostCard data={e} />
+            return <PostCard data={e} cb={mutateLatest} />
           }))}
         </div>
       </section>
