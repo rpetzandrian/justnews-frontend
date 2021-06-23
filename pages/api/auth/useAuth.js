@@ -40,7 +40,6 @@ export const useAuth = () => {
   }
 
   const { data: auth, mutate: mutateAuth, error: errorAuth } = useSWR('auth_login', getUser);
-  console.log(auth, 'AUTHHHHH')
   const loadingAuth = !auth && !errorAuth;
   const loggedOut = auth?.loggedOut
 

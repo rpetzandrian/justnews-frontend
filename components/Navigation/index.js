@@ -19,6 +19,15 @@ const Navigation = ({ changeKeyword, query }) => {
     mutateNotif(actionNotif.readNotif(auth?.data?.id))
   }
 
+  const img = (data) => {
+    if (!data) return '/images/profile-photo.png'
+    if (data?.split('/')[1] !== 'uploads') {
+      return data
+    } else {
+      return `${process.env.img_url}${data}`
+    }
+  }
+
   return (
     <>
       <Navbar bg="light" expand="lg" className='border border-bottom py-2 ff-lato'>
@@ -35,14 +44,14 @@ const Navigation = ({ changeKeyword, query }) => {
             <div className='d-flex align-items-center'>
               <div className="mx-3 input-group">
                 <img className="input-group-text ps-4 group-text" src='/icons/search.svg' alt='search' />
-                <input placeholder='Search' type="text" className='form-control py-3 px-4 form-input-group profile' onFocus={() => router.push('/search')} onChange={(e) => changeKeyword({ ...query, search: e.target.value })} />
+                <input placeholder='Search' type="text" className='form-control py-3 px-4 form-input-group profile' onFocus={() => router.push('/search')} onClick={(e) => changeKeyword({ ...query, search: e.target.value })} />
                 <small className='text-danger ms-3 mt-2'></small>
               </div>
               <div className='mx-3 notification'>
                 <img src={`/icons/${notif?.unreadNotif > 0 ? 'notif-read' : 'notif'}.svg`} als='notif' onClick={() => { setNotifShow(!notifShow); notif?.unreadNotif > 0 ? readNotif() : null }} />
               </div>
               <div className='mx-3 p-1 profile-photo'>
-                <img width='36px' height='36px' src={`${process.env.img_url}${user?.photo}`} alt='photo' className='rounded-circle img-profile' onClick={() => router.push('/profile')} />
+                <img width='36px' height='36px' src={img(user?.photo)} alt='photo' className='rounded-circle img-profile' onClick={() => router.push('/profile')} />
               </div>
             </div>
           ) : (

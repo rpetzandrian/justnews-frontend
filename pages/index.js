@@ -17,10 +17,9 @@ export default function Home({ latest, recommended }) {
   const { latest: latestPosts, mutateLatest } = useLatest(auth?.data?.id, { initialData: latest })
   const { recommended: recommendedPosts, mutateRecommended } = useRecommended(auth?.data?.id, { initialData: recommended })
 
-  // console.log(latestPosts, recommendedPosts, 'HOMEEEEEEEEEEEee')
-  // console.log(latest, recommended)
-
-  // console.log(loggedOut, 'log')
+  useEffect(() => {
+    mutateAuth()
+  }, [])
 
   return (
     <>

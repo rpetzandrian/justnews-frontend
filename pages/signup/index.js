@@ -3,6 +3,9 @@ import { useEffect } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { actionAuth, useAuth } from '../api'
+import GoogleLogin from "react-google-login";
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+
 // import { useSignup } from "../../libs/fetcher/useAuth";
 
 const Signup = () => {
@@ -10,9 +13,9 @@ const Signup = () => {
   const { loggedOut, mutateAuth, loadingAuth, auth } = useAuth()
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const signup = (data) => {
-    actionAuth.authRegister(data)
-  }
+  const signup = (data) => actionAuth.authRegister(data),
+    resGoogleSuccess = res => actionAuth.authLogin({ ...res.profileObj, provider: 'google' }),
+    responseFacebook = res => actionAuth.authLogin({ ...res, imageUrl: res.picture.data.url, provider: 'facebook' })
 
   useEffect(() => {
     if (!loggedOut && !loadingAuth) {
@@ -78,9 +81,22 @@ const Signup = () => {
             </Button>
             <p className='fw-bold text-center mt-5'>OR SIGNUP WITH</p>
             <div className='d-flex justify-content-center mb-5'>
-              <img src='/icons/google.svg' alt='' className='mx-3' />
-              <img src='/icons/fb.svg' alt='' className='mx-3' />
-              <img src='/icons/twitter.svg' alt='' className='mx-3' />
+              <GoogleLogin
+                clientId='726602830819-994nsh23tecqtg094t6gtmv2o4df0mjm.apps.googleusercontent.com'
+                render={renderProps => (
+                  <img src='/icons/google.svg' alt='' className='mx-3' onClick={renderProps.onClick} disabled={renderProps.disabled} />
+                )}
+                onSuccess={resGoogleSuccess}
+              />
+              <FacebookLogin
+                appId="505359304005541"
+                autoLoad={true}
+                fields="name,email,picture"
+                render={renderProps => (
+                  <img src='/icons/fb.svg' alt='' className='mx-3' onClick={renderProps.onClick} disabled={renderProps.disabled} />
+                )}
+                callback={responseFacebook} />
+              {/* <img src='/icons/twitter.svg' alt='' className='mx-3' /> */}
             </div>
           </div>
         </Col>

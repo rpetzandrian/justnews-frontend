@@ -1,12 +1,21 @@
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 
 const Edit = ({ user, register, disabled, setDisabled, handleSubmit, saveEdit, setImg }) => {
+  const img = (data) => {
+    if (!data) return '/images/profile-photo.png'
+    if (data?.split('/')[1] !== 'uploads') {
+      return data
+    } else {
+      return `${process.env.img_url}${data}`
+    }
+  }
+
   return (
     <>
       <div className='w-100 d-flex justify-content-center position-relative mt-5'>
         <div className='d-flex justify-content-center align-items-center'>
           <Form.Label className='pt-3'>
-            <img className='radius' width='100px' height='100px' src={user?.photo ? `${process.env.img_url}${user?.photo}` : '/images/profile-photo.png'} alt='profile-photo' />
+            <img className='radius' width='100px' height='100px' src={img(user?.photo)} alt='profile-photo' />
             <Form.File id="exampleFormControlFile1" label="Example file input" className='d-none w-100 h-100' onChange={(e) => setImg(e.target.files[0])} />
           </Form.Label>
         </div>

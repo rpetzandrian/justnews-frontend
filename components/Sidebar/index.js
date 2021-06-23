@@ -2,6 +2,15 @@ import { Card, Col, Row } from 'react-bootstrap'
 import { actionAuth, useAuth, useUser } from '../../pages/api'
 
 const Sidebar = ({ user, mutateAuth, actionAuth, tabs, setTabs }) => {
+  const showImg = (data) => {
+    if (!data) return '/images/profile-photo.png'
+    if (data?.split('/')[1] !== 'uploads') {
+      return data
+    } else {
+      return `${process.env.img_url}${data}`
+    }
+  }
+
   return (
     <>
       <h5>Profile</h5>
@@ -10,7 +19,7 @@ const Sidebar = ({ user, mutateAuth, actionAuth, tabs, setTabs }) => {
           <Row className='w-100 mx-3 justify-content-center align-items-center'>
             <Col xs={12} lg={5}>
               <div className='border-0 p-2 d-flex justify-content-center'>
-                <img className='radius' width='80px' height='80px' src={user?.photo ? `${process.env.img_url}${user?.photo}` : '/images/profile-photo.png'} alt='profile-photo' />
+                <img className='radius' width='80px' height='80px' src={showImg(user?.photo)} alt='profile-photo' />
               </div>
             </Col>
             <Col xs={12} lg={7} className='pt-3'>
