@@ -86,7 +86,6 @@ const Login = () => {
               />
               <FacebookLogin
                 appId="505359304005541"
-                autoLoad={true}
                 fields="name,email,picture"
                 render={renderProps => (
                   <img src='/icons/fb.svg' alt='' className='mx-3' onClick={renderProps.onClick} disabled={renderProps.disabled} />
