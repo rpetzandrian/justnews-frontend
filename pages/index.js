@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { useEffect } from 'react'
 import { Button, Col, Figure, Row } from 'react-bootstrap'
 import Footer from '../components/Footer'
+import Header from '../components/Header'
 import Navigation from '../components/Navigation'
 import PostCard from '../components/PostCard'
 import { useAuth, useCategory, useLatest, useRecommended } from './api'
@@ -23,6 +24,7 @@ export default function Home({ latest, recommended }) {
 
   return (
     <>
+      <Header />
       <Navigation />
       <section className="bg-light p-5 rounded-lg jumbotron">
         <div className='mt-5 py-5'>
