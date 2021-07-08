@@ -6,7 +6,7 @@ import { Card, Col, Form, Row, Button } from "react-bootstrap"
 import { useForm } from "react-hook-form"
 import Footer from "../../../components/Footer"
 import Navigation from "../../../components/Navigation"
-import { actionPosts, useAuth, useCategory } from "../../api"
+import { actionNotif, actionPosts, useAuth, useCategory } from "../../api"
 import 'react-quill/dist/quill.snow.css';
 import TurndownService from "turndown";
 const Quill = dynamic(import('react-quill'), {
@@ -84,6 +84,14 @@ const WriteArticle = () => {
     auth?.data?.id ? formData.append('user_id', auth?.data?.id) : ''
 
     actionPosts.addPost(formData)
+
+    actionNotif.pusherPushInterest({
+      interest: ['justnews'],
+      title: 'JustNews',
+      body: 'New article has published. Check it!'
+    })
+
+    router.push('/')
   }
 
   return (
