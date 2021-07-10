@@ -26,5 +26,12 @@ export const actionNotif = {
       url: `${process.env.api_url}/pusher/push/notif/interest`,
       data: data
     })
+  },
+
+  pusherPushUsers: (data) => {
+    globalPost({
+      url: `${process.env.api_url}/pusher/push/notif/users`,
+      data: data
+    })
   }
 }

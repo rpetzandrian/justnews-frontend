@@ -43,6 +43,14 @@ const ArticleDetail = () => {
         type: 'comment',
         message: 'sent you a comment'
       })
+
+      const users = post?.user_id
+      actionNotif.pusherPushUsers({
+        users: [users],
+        title: "JustNews",
+        body: `@${user?.username || 'anonymous'} send you a comment in your post`,
+        link: `${process.env.origin}/articles/${post?.slug}`
+      })
     }
   }
 

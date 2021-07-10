@@ -1,10 +1,11 @@
 import moment from 'moment'
 import { useRouter } from 'next/router'
-import { actionNotif, actionPosts, useAuth } from '../../pages/api'
+import { actionNotif, actionPosts, useAuth, useUser } from '../../pages/api'
 
 const PostCard = ({ data, cb }) => {
   const router = useRouter()
   const { auth, loggedOut } = useAuth()
+  const { data: user } = useUser({ id: auth?.data?.id, token: auth?.data?.token })
 
   const like = () => {
     if (!loggedOut) {
@@ -20,6 +21,13 @@ const PostCard = ({ data, cb }) => {
           type: 'like',
           message: 'just liked your post',
           post_id: data?.id
+        })
+        const users = data?.user_id
+        actionNotif.pusherPushUsers({
+          users: [users],
+          title: "JustNews",
+          body: `@${user?.username || 'anonymous'} just liked your post`,
+          link: `${process.env.origin}/articles/${data?.slug}`
         })
       }
     }

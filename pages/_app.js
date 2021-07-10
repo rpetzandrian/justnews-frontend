@@ -6,7 +6,7 @@ import { useAuth } from './api';
 
 function MyApp({ Component, pageProps }) {
   const { auth } = useAuth()
-  console.log(auth, '_______apppp')
+  // console.log(auth, '_______apppp')
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function () {
@@ -37,7 +37,7 @@ function MyApp({ Component, pageProps }) {
           "user-token": `Bearer ${auth?.data?.token}`, // Headers your auth endpoint needs
         },
       });
-      console.log(tokenProvider, '___TOKENNNNN')
+      // console.log(tokenProvider, '___TOKENNNNN')
 
       beamsClient
         .start()

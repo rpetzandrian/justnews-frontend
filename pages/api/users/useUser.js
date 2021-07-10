@@ -13,7 +13,7 @@ export const useUser = (form) => {
 
   const { data, mutate, error } = useSWR(!form?.id && !form?.token ? null : 'get_user', getUser, { refreshInterval: 5000 })
   const loadingUser = !error && !data
-  console.log(data)
+  // console.log(data)
 
   return {
     data,
