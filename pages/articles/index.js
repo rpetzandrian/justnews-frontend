@@ -8,7 +8,6 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 const Articles = ({ postCategory }) => {
-  2
   const router = useRouter()
   const { auth, loggedOut, loadingAuth } = useAuth()
   const { postByCategory, mutateByCategory } = useByCategory(auth?.data?.id, postCategory)
