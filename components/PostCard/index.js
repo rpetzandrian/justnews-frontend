@@ -74,7 +74,7 @@ const PostCard = ({ data, cb }) => {
   return (
     <>
       <div
-        className="card mx-2 my-2 post-card shadow-sm border-0"
+        className="card mx-2 my-2 post-card shadow-sm border-0 cursor"
         style={{
           minHeight: "140px",
           minWidth: "318px",

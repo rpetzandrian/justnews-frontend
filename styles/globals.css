@@ -79,6 +79,10 @@ body {
   font-weight: 700;
 }
 
+.cursor {
+  cursor: pointer;
+}
+
 .jumbotron {
   height: 95vh;
   background-image: url("/images/jumbotron.png");
@@ -178,7 +182,7 @@ body {
 
 .article-cover {
   width: 100%;
-  height: 320px;
+  height: 100%;
 }
 
 .comment-form {

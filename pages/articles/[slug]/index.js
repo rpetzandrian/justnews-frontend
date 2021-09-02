@@ -17,6 +17,7 @@ import {
   useUser,
 } from "../../api";
 import parse from "html-react-parser";
+import Header from "../../../components/Header";
 
 const ArticleDetail = () => {
   const { slug } = useRouter().query;
@@ -76,6 +77,7 @@ const ArticleDetail = () => {
 
   return (
     <>
+      <Header />
       <Navigation />
       <section className="px-5 mt-5 article-detail-head">
         <div className="px-5 mt-5 d-flex justify-content-between">
@@ -83,7 +85,7 @@ const ArticleDetail = () => {
             <img src="/icons/back.svg" alt="back" />
             <p className="ms-3 pt-3">Back</p>
           </div>
-          <p className="pt-3">Article Viewer</p>
+          <h4 className="pt-3 fw-bold">Article Viewer</h4>
           <p></p>
         </div>
       </section>
@@ -91,15 +93,19 @@ const ArticleDetail = () => {
       {post && (
         <>
           <section className="px-5 mt-5">
-            <Row className="align-items-center">
-              <Col xs={12} md={6} className="mt-3">
+            <Row className="align-items-center px-5 h-100">
+              <Col xs={12} md={6} className="mt-3 pe-5">
                 <img
                   className="article-cover"
                   src={`${process.env.img_url}${post?.cover} `}
                   alt=""
                 />
               </Col>
-              <Col xs={12} md={6} className="mt-3">
+              <Col
+                xs={12}
+                md={6}
+                className="mt-3 ps-5 h-auto d-flex flex-column justify-content-between"
+              >
                 <h3>{post?.title}</h3>
                 <p className="mt-5 mb-0">{post?.author} - Author</p>
                 <small className="text-muted mt-0">
@@ -126,15 +132,15 @@ const ArticleDetail = () => {
           </section>
 
           <section className="px-5 mt-3 article-text">
-            {parse(post?.text)}
+            <div className="px-5">{parse(post?.text)}</div>
             {/* <ReactMarkdown children={post?.text} /> */}
           </section>
         </>
       )}
 
       <section className="px-5 mt-5 comment">
-        <h6>Comments</h6>
-        <Row>
+        <h6 className="px-5">Comments</h6>
+        <Row className="px-5">
           <Col xs={12} md={10}>
             <div className="d-flex align-items-center w-100 mt-3 form-add-comment">
               <div>

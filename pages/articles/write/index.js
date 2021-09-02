@@ -9,6 +9,7 @@ import Navigation from "../../../components/Navigation";
 import { actionNotif, actionPosts, useAuth, useCategory } from "../../api";
 import "react-quill/dist/quill.snow.css";
 import TurndownService from "turndown";
+import Header from "../../../components/Header";
 const Quill = dynamic(import("react-quill"), {
   ssr: false,
   loading: () => <p>Loading ...</p>,
@@ -101,27 +102,30 @@ const WriteArticle = () => {
 
   return (
     <>
+      <Header />
       <Navigation />
-      <div className="px-5 mt-5 d-flex justify-content-between">
-        <div className="d-flex">
-          <img src="/icons/back.svg" alt="back" />
-          <p className="ms-3 pt-3">Back</p>
+      <section className="px-5">
+        <div className="px-5 mt-5 d-flex justify-content-between">
+          <div className="d-flex cursor">
+            <img src="/icons/back.svg" alt="back" />
+            <p className="ms-3 pt-3">Back</p>
+          </div>
+          <h4 className="pt-3 fw-bold">Write Articles</h4>
+          <p className="pt-3">Save as draft</p>
         </div>
-        <p className="pt-3">Write Articles</p>
-        <p className="pt-3">Save as draft</p>
-      </div>
+      </section>
       <section className="px-5 mt-5">
-        <Row className="g-3 mb-5 form-write">
+        <Row className="g-3 mb-5 form-write px-5">
           <Col
             xs={12}
             md={4}
             lg={3}
             className="d-flex align-items-end flex-column"
           >
-            <Card className="rounded w-100 h-100 upload-box mb-3">
+            <Card className="radius w-100 h-100 upload-box mb-3">
               <form encType="multipart/form-data" className="h-100">
                 <Card.Body className="h-100">
-                  <label className="rounded text-center d-flex justify-content-center upload-dropbox">
+                  <label className="radius text-center d-flex justify-content-center upload-dropbox">
                     <input
                       type="file"
                       className="w-100 h-100 d-none"
@@ -139,7 +143,7 @@ const WriteArticle = () => {
             </Card>
             <Button
               variant="dark"
-              className="w-100 text-center mt-auto py-3 rounded"
+              className="w-100 text-center mt-auto py-4 radius"
             >
               Chosee Cover
             </Button>
@@ -152,17 +156,20 @@ const WriteArticle = () => {
                     <Form.Control
                       type="text"
                       placeholder="Article Title"
-                      className="py-3 rounded upload-box"
+                      className="py-3 radius upload-box"
                       {...register("title")}
                     />
                   </Form.Group>
                 </Col>
                 <Col>
-                  <Form.Group controlId="exampleForm.ControlSelect1">
+                  <Form.Group
+                    controlId="exampleForm.ControlSelect1"
+                    className="d-flex position-relative"
+                  >
                     <Form.Control
                       placeholder="Article category"
                       as="select"
-                      className="py-3 rounded upload-box"
+                      className="py-3 radius upload-box"
                       {...register("category_id")}
                     >
                       <option value={0} selected>
@@ -172,6 +179,12 @@ const WriteArticle = () => {
                         return <option value={e.id}>{e.category}</option>;
                       })}
                     </Form.Control>
+                    <img
+                      src="/icons/caret-down.svg"
+                      alt="back"
+                      className="position-absolute"
+                      style={{ right: 20, bottom: 24 }}
+                    />
                   </Form.Group>
                 </Col>
               </Row>
@@ -201,7 +214,7 @@ const WriteArticle = () => {
             </Form>
             <Button
               variant="primary"
-              className="w-100 text-center mt-3 py-3 rounded"
+              className="w-100 text-center mt-3 py-4 radius"
               onClick={handleSubmit(add)}
             >
               Request Publish Article
