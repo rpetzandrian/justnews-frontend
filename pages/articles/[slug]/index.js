@@ -93,7 +93,7 @@ const ArticleDetail = () => {
       {post && (
         <>
           <section className="px-5 mt-5">
-            <Row className="align-items-center px-5 h-100">
+            <Row className="align-items-center px-5">
               <Col xs={12} md={6} className="mt-3 pe-5">
                 <img
                   className="article-cover"
@@ -101,32 +101,32 @@ const ArticleDetail = () => {
                   alt=""
                 />
               </Col>
-              <Col
-                xs={12}
-                md={6}
-                className="mt-3 ps-5 h-auto d-flex flex-column justify-content-between"
-              >
-                <h3>{post?.title}</h3>
-                <p className="mt-5 mb-0">{post?.author} - Author</p>
-                <small className="text-muted mt-0">
-                  {moment(`${post?.publish_at} `, "YYYYMMDD").format(
-                    "dddd, MMM Do YYYY"
-                  )}
-                </small>
-                <div className="d-flex mt-3">
-                  <div className="d-flex justify-content-start align-items-center">
-                    <img src="/icons/likes.svg" alt="likes" />
-                    <p className="mx-3 pt-3">{post?.like}</p>
+              <Col xs={12} md={6} className="mt-3 ps-5">
+                <div className="d-flex flex-column">
+                  <h2 className="fw-bold">{post?.title}</h2>
+                  <div className="mt-auto">
+                    <p className="mt-5 mb-0">{post?.author} - Author</p>
+                    <small className="text-muted mt-0">
+                      {moment(`${post?.publish_at} `, "YYYYMMDD").format(
+                        "dddd, MMM Do YYYY"
+                      )}
+                    </small>
+                    <div className="d-flex mt-3">
+                      <div className="d-flex justify-content-start align-items-center">
+                        <img src="/icons/likes.svg" alt="likes" />
+                        <p className="mx-3 pt-3">{post?.like}</p>
+                      </div>
+                      <img
+                        width="24px"
+                        src="/icons/Bookmark-white.svg"
+                        alt="save"
+                      />
+                    </div>
+                    <Button variant="dark" className="w-100 py-4 radius mt-3">
+                      Share Article Link
+                    </Button>
                   </div>
-                  <img
-                    width="24px"
-                    src="/icons/Bookmark-white.svg"
-                    alt="save"
-                  />
                 </div>
-                <Button variant="dark" className="w-100 py-4 radius mt-3">
-                  Share Article Link
-                </Button>
               </Col>
             </Row>
           </section>

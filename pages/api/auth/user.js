@@ -16,7 +16,7 @@ export default withIronSession(
   {
     cookieName: "user-session",
     cookieOptions: {
-      secure: process.env.NODE_ENV === "production" ? true : false
+      secure: false
     },
     password: '9bnNkD5TVbY7Tkw2tywteyureyrqasud8ay8'
   }
