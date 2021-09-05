@@ -21,6 +21,14 @@ This project is using :
 2. SWR + Axios
 3. Bootstraps
 4. React Bootstrap
+5. Next Iron Session
+
+## Features
+The features in this project include:
+> User can read news inside the world
+> User can request to be an Author and Publish his own News
+> User can likes and saves the news he want
+> User can interract with author through comment
 
 ## Screenshoot
 
