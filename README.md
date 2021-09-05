@@ -1,8 +1,22 @@
-## Justnews
+<h1  align="center">Just News</h1>
 
-JustNews is a news provider app. In this repository, This is a Frontend for JustNews App. This implementing [JustNews Backend](https://github.com/rpetzandrian/justnews-backend) for backend side.
+
+<p  align="center">Don't miss about what's happening in this world<br/>Ekxplore now in <strong>Just News</strong>
+</p>
+
+
+<p  align="center"> 
+    <a  href="https://github.com/rpetzandrian/justnews-frontend">
+        <img  src="https://img.shields.io/badge/-Open%20Source-blue"  alt="JustNews is released Open Source"  />
+    </a>
+</p>
 
 ![Justnews](https://user-images.githubusercontent.com/74188254/132126693-d3cd0dc5-d1f8-478f-a05f-1a2bb79f5581.png)
+
+
+## Intermezzo
+
+Justnews is a news provider application. Where users can read news, write news, and interact with news authors.
 
 ## Getting started
 
@@ -22,13 +36,14 @@ This project is using :
 3. Bootstraps
 4. React Bootstrap
 5. Next Iron Session
+6. Pusher Beams for Notification
 
 ## Features
 The features in this project include:
-> User can read news inside the world
-> User can request to be an Author and Publish his own News
-> User can likes and saves the news he want
-> User can interract with author through comment
+- User can read news inside the world
+- User can request to be an Author and Publish his own News
+- User can likes and saves the news he want
+- User can interract with author through comment
 
 ## Screenshoot
 
