@@ -2,6 +2,8 @@
 
 JustNews is a news provider app. In this repository, This is a Frontend for JustNews App. This implementing [JustNews Backend](https://github.com/rpetzandrian/justnews-backend) for backend side.
 
+![Justnews](https://user-images.githubusercontent.com/74188254/132126693-d3cd0dc5-d1f8-478f-a05f-1a2bb79f5581.png)
+
 ## Getting started
 
 To get the React app running locally:
