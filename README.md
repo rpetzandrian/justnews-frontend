@@ -16,7 +16,7 @@
 
 ## Intermezzo
 
-Justnews is a news provider application. Where users can read news, write news, and interact with news authors.
+Justnews is a news provider application. Users can read news, write news, and interact with news authors.
 
 ## Getting started
 
