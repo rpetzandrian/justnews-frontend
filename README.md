@@ -1,7 +1,7 @@
 <h1  align="center">Just News</h1>
 
 
-<p  align="center">Don't miss about what's happening in this world<br/>Ekxplore now in <strong>Just News</strong>
+<p  align="center">Don't miss about what's happening in this world<br/>Explore now in <strong>Just News</strong>
 </p>
 
 
